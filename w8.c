@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
         my_exit(400);
     }
 
-    if (isnan(x) || isinf(x) || isnan(y) || isinf(y) || isnan(z) || isinf(z) || isinf(k) || isnan(k) || isnan(m) || isinf(m)) {
+    if (isnan(x) || isinf(x) || isnan(y) || isinf(y) || isnan(z) || isinf(z) ) {
         printf("Za duże lub brakujące dane\n");
         my_exit(400);
     }
