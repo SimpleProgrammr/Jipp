@@ -58,6 +58,8 @@ int main(int argc, char* argv[]) {
     arr[2] = c;
     arr[3] = d;
 
+    clearInputBuffer();
+
     int index = 0;
     double max = 0;
     for(int i = 0; i < 4; i++) {

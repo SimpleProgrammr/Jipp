@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
         exit(3);
     }
-
+    clearInputBuffer();
     if (isnan(a) || isinf(a) || isnan(b) || isinf(b) || isnan(c) || isinf(c)) {
         printf("Za duże lub brakujące dane\n");
         my_exit(400);
