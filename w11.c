@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <windows.h>
 // 11. Dane są cztery liczby całkowite a,b,c,d. Znaleźć wśród nich liczbę największą i wydrukować
 // jej wartość i pozycję przyjmując, że dla a(pozycja=1), b(pozycja=2) itd. (nie wprowadzać
 // zmiennej indeksowanej).
@@ -29,6 +30,8 @@ double pr_round(double x, unsigned int digits) {
 
 int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "pl_PL.UTF-8");
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
 
     double a = 0.0, b = 0.0, c = 0.0, d = 0.0;
     double arr[4];

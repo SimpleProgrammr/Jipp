@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <windows.h>
 
 void my_exit(int code);
 
@@ -83,6 +84,8 @@ double pr_round(double x, unsigned int digits) {
 
 int main(int argc, char* argv[]) {
     setlocale(LC_ALL, "pl_PL.UTF-8");
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
 
     double a = 0.0, b = 0.0, c = 0.0;
     int ret = -1;

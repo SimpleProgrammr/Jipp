@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <windows.h>
 
 
 void my_exit(int code) {
@@ -39,6 +40,8 @@ void w9Obliczenia(double x, double y, double z, int k, int m) {
 int main(int argc, char* argv[])
 {
     setlocale(LC_ALL, "pl_PL.UTF-8");
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
 
     double x = 0.0, y = 0.0, z = 0.0, kd,md;
     int k = 0, m = 0;
