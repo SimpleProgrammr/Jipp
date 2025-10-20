@@ -21,13 +21,13 @@ void clearInputBuffer() {
 }
 
 void w9Obliczenia(double x, double y, double z, int k, int m) {
-    double w1 = pow(x/(y*z), 1.0/3.0) * log(pow(x,2.0)+pow(y,2.0));
+    double w1 = cbrt(x/(y*z)) * log(pow(x,2.0)+pow(y,2.0));
     double w2 = sin((double)k*(x/2.0))*cos((double)m*y)
     + y * exp(2.0*x-1.0);
     double w3 = (double)fabs(x/((2*pow(y,2.0) +1)))
     + sqrt(y/(pow(z,2.0)+3))
     + 5*pow(y+z,3);
-    double w4 = x/(y*z) * pow(z+1, 1.0/3.0)+ pow(pow(x,2.0)+pow(z,2.0) +1.0, 1.0/(double)k) - fabs(y);
+    double w4 = x/(y*z) * cbrt(z+1)+ pow(pow(x,2.0)+pow(z,2.0) +1.0, 1.0/(double)k) - fabs(y);
     double w5 = 1/(sqrt(pow(x,2.0)+pow(y,2.0) + pow(k,2.0))) + (1/x)*sin((double)k*y) ;
 
     printf("w1 = %.8lf\n", w1);
