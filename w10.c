@@ -44,11 +44,11 @@ int main(int argc, char* argv[]) {
            "\t  a > 0 \n"
            "\t  b > 0 \n"
            "\t  c > 0 \n");
-    printf("Precyzja dla '0' to 1e-6\n");
+    printf("Precyzja dla '0' to 1e-14\n");
     printf("Zmienne muszą być skończone\n");
-    printf("Format dla liczb nie całkowitych: <cyfry>,<cyfry> (inaczej wyrzuci błąd)\n");
+    printf("Format dla liczb nie całkowitych: <cyfry>.<cyfry> (inaczej wyrzuci błąd)\n");
     printf("--------------------------------\n");
-    printf("Podaj a,b,c (odziel przy pomocy spacji i pamiętaj o warunkach powyżej\n");
+    printf("Podaj a, b, c rozdzielone tylko SPACJAMI w podanej kolejności:\n");
     ret = scanf("%le%le%le", &a, &b, &c);
 
     if(ret != 3)
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
         printf("Za duże lub brakujące dane\n");
         my_exit(400);
     }
-    if(a < 1e-6 || b < 1e-6 || c < 1e-6)
+    if(a < 1e-14 || b < 1e-14 || c < 1e-14)
     {
         printf("To nie będzie trójkąt.\n"
                "A lub B lub C jest < 0\n");

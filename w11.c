@@ -40,13 +40,13 @@ int main(int argc, char* argv[]) {
 
 
     printf("Program obliczenia największej wartości\n");
-    printf("Precyzja dla '0' to 1e-6\n");
+    printf("Precyzja dla '0' to 1e-14\n");
     printf("Zmienne muszą być skończone\n");
-    printf("Format dla liczb nie całkowitych: <cyfry>,<cyfry> (inaczej wyrzuci błąd)\n");
+    printf("Format dla liczb nie całkowitych: <cyfry>.<cyfry> (inaczej wyrzuci błąd)\n");
     printf("-----------------------------------------\n");
     printf("Podaj cztery wartości rzeczywiste (a, b, c, d)");
     printf("--------------------------------\n");
-    printf("Podaj a, b, c, d (odziel przy pomocy spacji i pamiętaj o warunkach powyżej\n");
+    printf("Podaj a, b, c, d rozdzielone tylko SPACJAMI w podanej kolejności:\n");
     ret = scanf("%le%le%le%le", &a, &b, &c, &d);
 
     if(ret != 4)

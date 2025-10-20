@@ -49,10 +49,10 @@ int main(int argc, char* argv[])
 
     printf("Program obliczenia rzeczywistych pierwiastkow rownania kwadratowego\n");
     printf("-------------------- a*x^2+b*x+c = 0 ------------------------------\n\n");
-    printf("Precyzja dla '0' to 1e-6\n");
+    printf("Precyzja dla '0' to 1e-14\n");
     printf("Zmienne muszą być skończone\n");
-    printf("Format dla liczb nie całkowitych: <cyfry>,<cyfry> (inaczej wyrzuci błąd)\n");
-    printf("Podaj a,b,c\n");
+    printf("Format dla liczb nie całkowitych: <cyfry>.<cyfry> (inaczej wyrzuci błąd)\n");
+    printf("Podaj a, b, c rozdzielone tylko SPACJAMI w podanej kolejności:\n");
     ret = scanf("%le%le%le", &a, &b, &c);
 
     if(ret != 3)
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         my_exit(400);
     }
 
-    if(fabs(a) < 1e-6)
+    if(fabs(a) < 1e-14)
     {
         printf("To nie jest rownanie kwadratowe: a = 0.\n");
 

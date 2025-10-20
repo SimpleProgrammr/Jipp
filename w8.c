@@ -54,11 +54,11 @@ int main(int argc, char* argv[])
            "z należy do R \\ {0}\n"
            "k należy do Z \\ {0}\n"
            "m należy do Z\n");
-           printf("Precyzja dla '0' to 1e-6\n");
+           printf("Precyzja dla '0' to 1e-14\n");
            printf("Zmienne muszą być skończone\n");
-           printf("Format dla liczb nie całkowitych: <cyfry>,<cyfry> (inaczej wyrzuci błąd)\n");
+           printf("Format dla liczb nie całkowitych: <cyfry>.<cyfry> (inaczej wyrzuci błąd)\n");
     printf("---------------------------------------------------------------------\n");
-    printf("Podaj (rzeczywiste) x, y, z oraz (całkowite) k, m rozdzielone spacjami w podanej kolejności:\n");
+    printf("Podaj (rzeczywiste) x, y, z oraz (całkowite) k, m rozdzielone tylko SPACJAMI w podanej kolejności:\n");
     ret = scanf("%le%le%le%le%le", &x, &y, &z, &kd, &md);
     clearInputBuffer();
     if(ret != 5)
@@ -68,14 +68,14 @@ int main(int argc, char* argv[])
         my_exit(500);
     }
 
-    if (kd-round(kd) != 0.0 || md-round(md) != 0.0) {
+    if (kd - round(kd) != 0.0 || md - round(md) != 0.0) {
         printf("Dane k i m zostały powinny być całkowite\n");
         my_exit(500);
     }
 
     k = kd;
     m = md;
-    if(fabs(x) < 1e-6 || fabs(y) < 1e-6 || fabs(z) < 1e-6 || k == 0 || x == 0.5)
+    if(fabs(x) < 1e-14 || fabs(y) < 1e-14 || fabs(z) < 1e-14 || k == 0 || x == 0.5)
     {
 
         printf("Któraś z danych jest spoza zakresu!!!\n");
