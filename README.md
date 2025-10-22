@@ -5,7 +5,7 @@
 - [Zadanie 9](LAB2/w9.c)
 - [Zadanie 10](LAB2/w10.c)
 - [Zadanie 11](LAB2/w11.c)
-- [Zadanie 112](LAB2/w12.c)
+- [Zadanie 12](LAB2/w12.c)
 
 ### LAB3
 
