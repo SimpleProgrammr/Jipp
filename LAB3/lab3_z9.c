@@ -15,9 +15,9 @@ int main() {
     double pole = 0.0, obw = 0.0;
     int ret = 0;
 
-    printf("Program obliczenia trójkątów dla zadania w11\n");
+    printf("Program obliczenia promienia koła dla zadania 9\n");
     printf("--------------------------------------------------------------\n");
-    printf("Przykładowy trójkąt\n"
+    printf("Przykładowe koło\n"
         "      _______\n"
         "     / r    \\      \n"
         "     |<---    |     \n"
