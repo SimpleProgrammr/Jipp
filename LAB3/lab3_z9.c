@@ -1,10 +1,16 @@
+#include <float.h>
+#include <locale.h>
 #include <math.h>
 #include <stdio.h>
-
+#include <windows.h>
 
 void obliczKolo(double r, double *w1, double *w2);
 
 int main() {
+    setlocale(LC_ALL, "pl_PL.UTF-8");
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
+
     double r = 0.0;
     double pole = 0.0, obw = 0.0;
     int ret = 0;
@@ -17,16 +23,19 @@ int main() {
         "     |<---    |     \n"
         "     \\______/      \n"
         "\t  a > 0 \n");
-    printf("Precyzja dla '0' to 1e-14\n");
     printf("Zmienne muszą być skończone\n");
     printf("Format dla liczb nie całkowitych: <cyfry>.<cyfry> (inaczej wyrzuci błąd)\n");
     printf("--------------------------------------------------------------\n");
-    printf("Podaj r:\n");
+    printf("Podaj r: ");
     ret = scanf("%le", &r);
 
     if (ret != 1) {
-        printf("error");
-        return 0;
+        printf("Błedne dane wejściowe\n");
+        return -1;
+    }
+    if (isnan(r) || isinf(r) || r < DBL_EPSILON) {
+        printf("Liczba z poza zakresu.\n");
+        return -1;
     }
 
     obliczKolo(r, &pole, &obw);
