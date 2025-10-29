@@ -37,7 +37,7 @@ long double f(long double x, long double delta_y, int M, int *stop_res, int *use
         element = pow(-1, iteration-1) * (pow(x, iteration) / iteration);
         y += element;
         u_M++;
-    } while (fabs(element) > delta_y && ++iteration <= M);
+    } while (fabs(element) > delta_y && iteration++ <= M);
     if (fabs(element) < delta_y) {
         *stop_res = MAX_DEF_PRECISION;
     }
@@ -54,48 +54,62 @@ int main() {
     //wczytaj ilość podziałów
     //Spradz czy delta nie jest < 1e-14
 
-    setlocale(LC_ALL, "pl_PL.CP1250");
+    setlocale(LC_ALL, "pl_PL.UTF-8");
+    setlocale(LC_NUMERIC, "C");
 
     long double a = 0, b = 0, nc = 0, deltaY = 0;
     long long int n = 0;
     printf("Liczymy Ln(1+x) !!!");
     printf("Interpretacja zakresu:\n---(A------B>--->x\n");
-    printf("A < x <= B\nZakres musi znajdować się w przedziale -1 < x <= 1\n");
-    printf("Podaj początek zakresu (A): ");
+    printf("A < x <= B\nZakres musi znajdować się w przedziale -1 < x <= 1\n"
+           "Używaj kropek jako punktora, znaki po przeciku zostaną zignorowane\n");
 
-    if (scanf("%Le", &a) != 1 || a < -1 || a > 1 || isnan(a)) {
+
+    printf("Podaj początek zakresu (A): ");
+    if (scanf("%Lf", &a) != 1 || a < -1 || a > 1 || isnan(a) ) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
+
+
     printf("Podaj koniec zakresu (B): ");
     if (scanf("%Le", &b) != 1 || b < -1 || b > 1 || b <= a || isnan(b)) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
+
+
     printf("Podaj ilość podziałów (0 < N < %d): ",INT_MAX);
-    if (scanf("%Le", &nc) != 1 || nc <= 0 || round(nc) != nc) {
+    if (scanf("%Le", &nc) != 1 || nc <= 0 || round(nc) != nc || isnan(nc) || nc > INT_MAX) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
+    n = safe_convert(nc);
+    if (n < 0) {
+        printf("Błędne dane wejściowe\n");
+        return 400;
+    }
     clearStdin();
+
+
     printf("Podaj dokładność wyników (0 < DeltaY < 1e-16): ");
     if (scanf("%Le", &deltaY) != 1 || deltaY < 1e-16 || isnan(deltaY) || isinf(deltaY)) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
-    n = safe_convert(nc);
-    if (n < 0) {
-        printf("Błędne dane wejściowe\n");
-    }
+
+
     long double deltaX = (b - a) / (long double) n;
     if (deltaX < LDBL_EPSILON) {
-        fprintf(stderr, "Zbyt gęsty podział\n");
+        fprintf(stderr, "Zbyt gęsty podział dla zadanego zakresu\n");
         return 300;
     }
-    int M = 1000000000;
+
+
+    int M = 1;
     printf("Podaj maksymalną ilość iteracji (0 < M < %d): ", INT_MAX);
     if (scanf("%d", &M) != 1 || M <= 0 || isnan(M) || isinf(M) || M > INT_MAX) {
         fprintf(stderr, "Błędne dane wejściowe\n");
