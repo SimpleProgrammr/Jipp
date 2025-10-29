@@ -62,11 +62,11 @@ int main() {
     printf("Liczymy Ln(1+x) !!!");
     printf("Interpretacja zakresu:\n---(A------B>--->x\n");
     printf("A < x <= B\nZakres musi znajdować się w przedziale -1 < x <= 1\n"
-           "Używaj kropek jako punktora, znaki po przeciku zostaną zignorowane\n");
+        "Używaj kropek jako punktora, znaki po przeciku zostaną zignorowane\n");
 
 
     printf("Podaj początek zakresu (A): ");
-    if (scanf("%Lf", &a) != 1 || a < -1 || a > 1 || isnan(a) ) {
+    if (scanf("%Lf", &a) != 1 || a < -1 || a > 1 || isnan(a)) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
