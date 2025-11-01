@@ -4,7 +4,8 @@
 #include <limits.h>
 #include <locale.h>
 #include <stdlib.h>
-#include <wchar.h>
+#include <windows.h>
+
 
 void clearStdin();
 
@@ -28,7 +29,7 @@ long long int safe_convert(long double ld) {
 }
 
 
-long double f(long double x, long double delta_y, int M, int *stop_res, int *used_M) {
+long double ff(long double x, long double delta_y, int M, int *stop_res, int *used_M) {
     long double y = x;
     long double element;
     int u_M = 0;
@@ -37,7 +38,7 @@ long double f(long double x, long double delta_y, int M, int *stop_res, int *use
         element = pow(-1, iteration-1) * (pow(x, iteration) / iteration);
         y += element;
         u_M++;
-    } while (fabs(element) > delta_y && ++iteration <= M);
+    } while (fabs(element) > delta_y && iteration++ <= M);
     if (fabs(element) < delta_y) {
         *stop_res = MAX_DEF_PRECISION;
     }
@@ -54,50 +55,73 @@ int main() {
     //wczytaj ilość podziałów
     //Spradz czy delta nie jest < 1e-14
 
-    setlocale(LC_ALL, "pl_PL.CP1250");
+    setlocale(LC_ALL, "pl_PL.UTF-8");
+    setlocale(LC_NUMERIC, "C");
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
 
     long double a = 0, b = 0, nc = 0, deltaY = 0;
     long long int n = 0;
     printf("Liczymy Ln(1+x) !!!");
     printf("Interpretacja zakresu:\n---(A------B>--->x\n");
-    printf("A < x <= B\nZakres musi znajdować się w przedziale -1 < x <= 1\n");
-    printf("Podaj początek zakresu (A): ");
+    printf("A < x <= B\nZakres musi znajdować się w przedziale -1 < x <= 1\n"
+        "Używaj kropek jako punktora w liczbach rzeczywistych, znaki po przeciku zostaną zignorowane\n");
 
-    if (scanf("%Le", &a) != 1 || a < -1 || a > 1 || isnan(a)) {
+
+    printf("Podaj początek zakresu (A): ");
+    fflush(stdin);
+    if (scanf("%Lf", &a) != 1 || a < -1 || a > 1 || isnan(a)) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
+
+
     printf("Podaj koniec zakresu (B): ");
     if (scanf("%Le", &b) != 1 || b < -1 || b > 1 || b <= a || isnan(b)) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
-    printf("Podaj ilość podziałów (0 < N < %d): ",INT_MAX);
-    if (scanf("%Le", &nc) != 1 || nc <= 0 || round(nc) != nc) {
+
+
+    printf("Podaj ilość podziałów (0 < N < %d; Liczba calkowita): ",INT_MAX);
+    if (scanf("%Le", &nc) != 1 || nc <= 0 || round(nc) != nc || isnan(nc) || nc > INT_MAX) {
+        fprintf(stderr, "Błędne dane wejściowe\n");
+        return 400;
+    }
+    n = safe_convert(nc);
+    if (n < 0) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
-    printf("Podaj dokładność wyników (0 < DeltaY < 1e-16): ");
+
+
+    printf("Podaj dokładność wyników (0 < DeltaY < 1e-16; liczba rzeczywista): ");
     if (scanf("%Le", &deltaY) != 1 || deltaY < 1e-16 || isnan(deltaY) || isinf(deltaY)) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
     clearStdin();
-    n = safe_convert(nc);
-    if (n < 0) {
-        printf("Błędne dane wejściowe\n");
-    }
+
+
     long double deltaX = (b - a) / (long double) n;
     if (deltaX < LDBL_EPSILON) {
-        fprintf(stderr, "Zbyt gęsty podział\n");
+        fprintf(stderr, "Zbyt gęsty podział dla zadanego zakresu\n");
         return 300;
     }
-    int M = 1000000000;
-    printf("Podaj maksymalną ilość iteracji (0 < M < %d): ", INT_MAX);
-    if (scanf("%d", &M) != 1 || M <= 0 || isnan(M) || isinf(M) || M > INT_MAX) {
+
+
+    int M = 1;
+    long double Mle = 0.0;
+    printf("Podaj maksymalną ilość iteracji (0 < M < %d; ; Liczba całkowita): ", INT_MAX);
+    if (scanf("%Le", &Mle) != 1 || Mle <= 0 || round(Mle) != Mle || isnan(Mle) || Mle > INT_MAX) {
+        fprintf(stderr, "Błędne dane wejściowe\n");
+        return 400;
+    }
+    M = safe_convert(Mle);
+    if (M < 0) {
         fprintf(stderr, "Błędne dane wejściowe\n");
         return 400;
     }
@@ -112,13 +136,13 @@ int main() {
         exit(404);
     }
 
-    printf("Lp.\t\tX\t\t\t\tf_szereg(X)\t\t\t\tf_ściśle(X)\t\t\t\tWyrazy_szeregu\t\t\t\tPowód zatrzymania\n");
-    fprintf(file, "Lp.\t\tX\t\t\t\tf_szereg(X)\t\t\t\tf_ściśle(X)\t\t\t\tWyrazy_szeregu\t\t\t\tPowód zatrzymania\n");
+    printf("Lp.\t\tX\t\t\t\tf_szereg(X)\t\t\t\t f_ściśle(X)\t\t\t  Wyrazy_szeregu\t\t\tPowód zatrzymania\n");
+    fprintf(file, "Lp.\t\tX\t\t\t\tf_szereg(X)\t\t\t\t f_ściśle(X)\t\t\t  Wyrazy_szeregu\t\t\tPowód zatrzymania\n");
     long double x = a + deltaX;
     for (long long counter = 1; counter <= n; counter++) {
         int stop_res = ABNORMAL;
         int used_M = 0;
-        long double f_x = f(x, deltaY, M, &stop_res, &used_M);
+        long double f_x = ff(x, deltaY, M, &stop_res, &used_M);
         //stop_res = ABNORMAL;
         char *stop_msg;
         switch (stop_res) {
@@ -141,10 +165,9 @@ int main() {
                 exit(123);
         }
 
-        printf("%-5lld %-15.6Le %-24.16Lg %-24.16Lg %-10d \t\t\t\t%s\n", counter, x, f_x, logl(1 + x), used_M,
-               stop_msg);
-        fprintf(file, "%-5lld %-15.6Le %-24.16Lg %-24.16Lg %-10d \t\t\t\t%s\n", counter, x, f_x, logl(1 + x), used_M,
-                stop_msg);
+        if (counter % (n > 100 ? n/100 : 1) == 0)
+               printf("%-7lld %-15.6Le %-24.16Lg %-24.16Lg %-10d \t\t\t\t%s\n", counter, x, f_x, logl(1 + x), used_M, stop_msg);
+        fprintf(file, "%-7lld %-15.6Le %-24.16Lg %-24.16Lg %-10d \t\t\t\t%s\n", counter, x, f_x, logl(1 + x), used_M, stop_msg);
 
         x += deltaX;
     }
