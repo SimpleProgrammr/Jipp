@@ -5,5 +5,5 @@
 /w10
 /w11
 /w12
-/*.dSYM/
+*.dSYM/
 /cmake-build-debug/
