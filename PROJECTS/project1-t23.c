@@ -5,7 +5,7 @@
 #include <limits.h>
 #include <locale.h>
 #include <stdlib.h>
-#include <windows.h>
+//#include <windows.h>
 
 
 void clearStdin();
@@ -58,11 +58,10 @@ int main() {
     //wczytaj ilość podziałów
     //Spradz czy delta nie jest < 1e-14
 
-    setlocale(LC_ALL, "pl_PL.UTF-8");
-    setlocale(LC_NUMERIC, "C");
-    SetConsoleOutputCP(65001);
-    SetConsoleCP(65001);
-
+    // setlocale(LC_ALL, "pl_PL.UTF-8");
+    // setlocale(LC_NUMERIC, "C");
+    // SetConsoleOutputCP(65001);
+    // SetConsoleCP(65001);
 
 
     long double a = 0, b = 0, nc = 0, deltaY = 0;
