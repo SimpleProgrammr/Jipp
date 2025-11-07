@@ -1,6 +1,6 @@
 # Języki i Paradygmaty progrmowania
 
-## Projekty
+## Projekty (Tematy: [here](PROJECTS/TOPICS))
  - [Projekt 1](PROJECTS/project1-t23.c) (28.10.2025r.)
    - [x] Temat nr 23
 
@@ -28,3 +28,12 @@
 - [Zadanie 9](LAB4/z9.c)
 - [Zadanie 13](LAB4/z15.c)
 - [Zadanie 15](LAB4/z15.c)
+
+### LAB5
+- [Zadanie 13](LAB5/z13.c)
+- [Zadanie 14](LAB5/z14.c)
+- [Zadanie 15](LAB5/z15.c)
+- [Zadanie 16](LAB5/z16.c)
+- [Zadanie 17](LAB5/z17.c)
+- [Zadanie 18](LAB5/z18.c)
+- [Zadanie 19](LAB5/z19.c)
