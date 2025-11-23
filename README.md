@@ -1,7 +1,8 @@
 # Języki i Paradygmaty progrmowania
 
 ## Projekty
- - [Projekt 1](PROJECTS/project1-t23.c) (28.10.2025r.)
+
+- [Projekt 1](PROJECTS/Project%201/project1-t23.c) (28.10.2025r.)
    - [x] Temat nr 23
 
 ### LAB 2
