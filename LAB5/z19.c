@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int moje_strcmp(const char* t1, const char* t2) {
+int moje_strcmp(const char *t1, const char *t2) {
     if (t1 == NULL || t2 == NULL) {
         return -1;
     }
@@ -23,7 +23,7 @@ int moje_strcmp(const char* t1, const char* t2) {
     }
 }
 
-char* moje_strcat(char* tt, const char* t2) {
+char *moje_strcat(char *tt, const char *t2) {
     if (tt == NULL || t2 == NULL) {
         fprintf(stderr, "Error: NULL pointer passed to moje_strcat\n");
         exit(-1);
@@ -43,7 +43,7 @@ char* moje_strcat(char* tt, const char* t2) {
     return tt;
 }
 
-char* moje_strcpy(char* tt, const char* t2) {
+char *moje_strcpy(char *tt, const char *t2) {
     if (tt == NULL || t2 == NULL) {
         fprintf(stderr, "Error: NULL pointer passed to moje_strcpy\n");
         exit(-1);

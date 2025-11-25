@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/PROJECTS/project1-t23.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/LAB6/input.txt" charset="ISO-8859-2" />
+    <file url="file://$PROJECT_DIR$/LAB6/z15.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PROJECTS/Project 1/project1-t23.c" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/PROJECTS/Project 2/t1.txt" charset="ISO-8859-2" />
+    <file url="file://$PROJECT_DIR$/PROJECTS/Project 2/t2.txt" charset="ISO-8859-2" />
   </component>
 </project>
