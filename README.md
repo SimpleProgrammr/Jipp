@@ -3,7 +3,9 @@
 ## Projekty (Tematy: [here](PROJECTS/TOPICS))
 
 - [Projekt 1](PROJECTS/Project%201/project1-t23.c) (28.10.2025r.)
-   - [x] Temat nr 23
+    - [x] Temat nr 23
+- [Projekt 2](PROJECTS/Project%202/project2-t29.c) (25.11.2025r.)
+    - [x] Temat nr 29
 
 ### LAB 2
 
