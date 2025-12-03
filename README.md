@@ -50,3 +50,14 @@
 - [Zadanie 17](LAB6/z17.c)
 - [Zadanie 18](LAB6/z18.c)
 - [Zadanie 19](LAB6/z19.c)
+
+## LAB7
+
+- [Plik 1](/LAB7/plik1.c)
+- [Plik 2](/LAB7/plik2.c)
+- [Zadanie 10](/LAB7/z10.c)
+- Zadanie 14
+  - [Main](/LAB7/z14.c)
+  - [Util 1](/LAB7/z14-util1.c)
+  - [Util 2](/LAB7/z14-util2.c)
+  - [Util 3](/LAB7/z14-util3.c)
