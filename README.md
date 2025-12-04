@@ -1,4 +1,4 @@
-# Języki i Paradygmaty progrmowania
+# Języki i Paradygmaty programowania
 
 ## Projekty (Tematy: [here](PROJECTS/TOPICS))
 
