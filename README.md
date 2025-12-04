@@ -1,4 +1,4 @@
-# Języki i Paradygmaty progrmowania
+# Języki i Paradygmaty programowania
 
 ## Projekty (Tematy: [here](PROJECTS/TOPICS))
 
@@ -6,6 +6,8 @@
     - [x] Temat nr 23
 - [Projekt 2](PROJECTS/Project%202/project2-t29.c) (25.11.2025r.)
     - [x] Temat nr 29
+- [Projekt 3](/PROJECTS/Project%203) (2.12.2025r.)
+  - [X] Temat nr 29
 
 ### LAB 2
 
@@ -50,3 +52,14 @@
 - [Zadanie 17](LAB6/z17.c)
 - [Zadanie 18](LAB6/z18.c)
 - [Zadanie 19](LAB6/z19.c)
+
+## LAB7
+
+- [Plik 1](/LAB7/plik1.c)
+- [Plik 2](/LAB7/plik2.c)
+- [Zadanie 10](/LAB7/z10.c)
+- Zadanie 14
+  - [Main](/LAB7/z14.c)
+  - [Util 1](/LAB7/z14-util1.c)
+  - [Util 2](/LAB7/z14-util2.c)
+  - [Util 3](/LAB7/z14-util3.c)
