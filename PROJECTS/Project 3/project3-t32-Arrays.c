@@ -8,8 +8,8 @@ struct MATRIX_1D {
     double *content;
 };
 
-static double DownRange = -1.5;
-static double UpRange = 3.5;
+double DownRange = -1.5;
+double UpRange = 3.5;
 extern int col;
 extern int row;
 
@@ -69,6 +69,7 @@ struct MATRIX_1D LoadVector(FILE *file) {
     }
     return M;
 }
+
 
 bool IsInRange(double val) {
     return val >= DownRange && val <= UpRange;

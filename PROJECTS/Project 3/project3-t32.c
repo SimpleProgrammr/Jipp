@@ -1,15 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "project3-t32-Arrays.c"
-#include "project3-t32-Calculations.c"
 #include "project3-t32-FilesIO.c"
 #include "project3-t32-Error.c"
 
 int col = 0;
 int row = 0;
-
-void privateExit(int code) {
-}
 
 int main() {
     int choice = -1;
@@ -30,14 +26,17 @@ int main() {
         scanf("%d", &choice);
 
         if (choice == 0)
-            exit(0);
+            break;
         if (choice == 1)
             printf("Result: %d\n", HowManyElementsIn1DInRange(vector, choice));
         else if (choice >= 2 && choice <= 6)
             printf("Result: %d\n", HowManyElementsIn1DInRange(dane, choice));
+
         rewind(vector);
         rewind(dane);
         choice = 128;
+        getchar();
+        getchar();
     }
     CloseFile(dane);
     //CloseFile(wyniki);
@@ -58,7 +57,7 @@ void SetRow(int maxVal) {
 
 void SetColumn(int maxVal) {
     while (1) {
-        printf("\n\nEnter row number (1 - %d): ", maxVal);
+        printf("\n\nEnter column number (1 - %d): ", maxVal);
         scanf("%d", &col);
         col--;
         if (row > maxVal || row < 0) {
