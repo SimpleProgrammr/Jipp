@@ -6,7 +6,7 @@
     - [x] Temat nr 23
 - [Projekt 2](PROJECTS/Project%202/project2-t29.c) (25.11.2025r.)
     - [x] Temat nr 29
-- [Projekt 3](/PROJECTS/Project%203/) (2.12.2025r.)
+- [Projekt 3](/PROJECTS/Project%203) (2.12.2025r.)
   - [X] Temat nr 29
 
 ### LAB 2
