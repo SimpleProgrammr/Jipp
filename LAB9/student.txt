@@ -1,0 +1,6 @@
+Stasiu Stalin 1878 Moskwa 0.0
+Herman Goering 1893 Berlin 20.0
+Adolf Hitler 1889 Berlin 10.0
+Ante Pavelić 1889 Madryt 100.0
+Leng Sary 1925 Wietnam 25.0
+Ivan Groźny 1547 Moskwa 1000.0
