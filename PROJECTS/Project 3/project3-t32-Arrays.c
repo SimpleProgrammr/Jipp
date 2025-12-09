@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct MATRIX_1D {
+typedef struct {
     int height;
     int width;
     double *content;
-};
+} MATRIX_1D;
 
 double DownRange = -1.5;
 double UpRange = 3.5;
@@ -27,11 +27,11 @@ double *Allocate2DArrayIn1D(int height, int width) {
     return tmp;
 }
 
-double getValue(struct MATRIX_1D M, int row, int column) {
+double getValue(MATRIX_1D M, int row, int column) {
     return M.content[row * M.width + column];
 }
 
-void setValue(struct MATRIX_1D M, int row, int column, double value) {
+void setValue(MATRIX_1D M, int row, int column, double value) {
     M.content[row * M.width + column] = value;
 }
 
@@ -39,8 +39,8 @@ void Free1DArray(double *arr) {
     free(arr);
 }
 
-struct MATRIX_1D LoadFileIn2Din1DArray(FILE *file) {
-    struct MATRIX_1D M = {};
+MATRIX_1D LoadFileIn2Din1DArray(FILE *file) {
+    MATRIX_1D M = {};
     fscanf(file, "%d", &M.height);
     if (M.height <= 0) {
         PostError("Size must be greater than 0", 200);
@@ -57,8 +57,8 @@ struct MATRIX_1D LoadFileIn2Din1DArray(FILE *file) {
     return M;
 }
 
-struct MATRIX_1D LoadVector(FILE *file) {
-    struct MATRIX_1D M = {};
+MATRIX_1D LoadVector(FILE *file) {
+    MATRIX_1D M = {};
     fscanf(file, "%d", &M.width);
     if (M.width <= 0)
         PostError("Size must be greater than 0", 200);
@@ -76,7 +76,7 @@ bool IsInRange(double val) {
 }
 
 int HowManyElementsIn1DInRange(FILE *f, int mode) {
-    struct MATRIX_1D M = {};
+    MATRIX_1D M = {};
 
     int amount = 0;
 
