@@ -6,7 +6,7 @@ typedef struct {
     int rok;
     char adres[100];
     double stypendium;
-}STUDENT;
+} STUDENT;
 
 void swap(STUDENT *a, STUDENT *b) {
     STUDENT temp;
@@ -17,19 +17,18 @@ void swap(STUDENT *a, STUDENT *b) {
 
 void sort(STUDENT st[], int size) {
     int swapped;
-    do{
+    do {
         swapped = 0;
         for (int j = 0; j < size - 1; j++) {
-            if (st[j].stypendium < st[j+1].stypendium) {
+            if (st[j].stypendium < st[j + 1].stypendium) {
                 swap(&st[j], &st[j + 1]);
                 swapped++;
             }
         }
-    }while (swapped != 0);
+    } while (swapped != 0);
 
-    for (int i = 0; i<size ;i++) {
+    for (int i = 0; i < size; i++) {
         printf("%s %s %d %s %lf\n", st[i].imie, st[i].nazwisko, st[i].rok, st[i].adres, st[i].stypendium);
-
     }
 }
 
@@ -38,8 +37,10 @@ int main() {
     STUDENT st[100];
     int st_loaded = 0;
     while (st_loaded < 100) {
-        fscanf(f, "%s %s %d %s %lf", st[st_loaded].imie, st[st_loaded].nazwisko, &st[st_loaded].rok, st[st_loaded].adres, &st[st_loaded].stypendium);
-        printf("%s %s %d %s %lf\n", st[st_loaded].imie, st[st_loaded].nazwisko, st[st_loaded].rok, st[st_loaded].adres, st[st_loaded].stypendium);
+        fscanf(f, "%s %s %d %s %lf", st[st_loaded].imie, st[st_loaded].nazwisko, &st[st_loaded].rok,
+               st[st_loaded].adres, &st[st_loaded].stypendium);
+        printf("%s %s %d %s %lf\n", st[st_loaded].imie, st[st_loaded].nazwisko, st[st_loaded].rok, st[st_loaded].adres,
+               st[st_loaded].stypendium);
         if (feof(f)) {
             break;
         }
@@ -49,5 +50,4 @@ int main() {
 
     printf("\n\n");
     sort(st, st_loaded);
-
 }
