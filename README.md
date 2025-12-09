@@ -63,3 +63,21 @@
   - [Util 1](/LAB7/z14-util1.c)
   - [Util 2](/LAB7/z14-util2.c)
   - [Util 3](/LAB7/z14-util3.c)
+
+## LAB8
+
+- Utils
+  - [Util 1](/LAB8/util_1.c)
+  - [Util 2](/LAB8/util_2.c)
+  - [Util 3](/LAB8/util_3.c)
+  - [Util 4](/LAB8/util_4.c)
+  - [Util 5](/LAB8/util_5.c)
+- [Zadanie 6](/LAB8/z6.c)
+- [Zadanie 7](/LAB8/z7.c)
+- [Zadanie 8](/LAB8/z8.c)
+
+## LAB9
+
+- [Newton.c](/LAB9/Newton.c)
+- [Zadanie 10](/LAB9/z10.c)
+- [Zadanie 11](/LAB9/z11.c)
