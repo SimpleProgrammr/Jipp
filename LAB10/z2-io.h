@@ -150,7 +150,7 @@ void printStudent(STUDENT *st) {
     printf("------------------------------\n");
 }
 
-void goBackBy1(FILE* f) {
+void goBackBy1(FILE *f) {
     int p = ftell(f);
     if (p != 0) {
         fseek(f, p - 1, SEEK_SET);
@@ -205,7 +205,6 @@ void loadStudentsFromFile(char *filePath, STUDENT *TAIL) {
             ErrorExit("Memory allocation failed for address\n", 400);
         }
         strcpy(tmp->address, buffer);
-        goBackBy1(file);
 
         // Odczytaj wiek
         result = fscanf(file, "%d", &tmp->age);
@@ -215,6 +214,7 @@ void loadStudentsFromFile(char *filePath, STUDENT *TAIL) {
         // Pomiń znak nowej linii po liczbie
         while (fgetc(file) == '\n');
 
+        goBackBy1(file);
         // Odczytaj ilość pieniędzy
         result = fscanf(file, "%lf", &tmp->money);
         if (result != 1) {
@@ -222,6 +222,7 @@ void loadStudentsFromFile(char *filePath, STUDENT *TAIL) {
         }
         // Pomiń znak nowej linii po liczbie
         while (fgetc(file) == '\n');
+        goBackBy1(file);
 
         // Dodaj studenta do listy
         TAIL = addStudentOnTailWithReadyMemory(TAIL, tmp);
