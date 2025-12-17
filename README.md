@@ -81,3 +81,7 @@
 - [Newton.c](/LAB9/Newton.c)
 - [Zadanie 10](/LAB9/z10.c)
 - [Zadanie 11](/LAB9/z11.c)
+
+## LAB10
+
+- [Zadanie 1]()
