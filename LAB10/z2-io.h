@@ -150,6 +150,13 @@ void printStudent(STUDENT *st) {
     printf("------------------------------\n");
 }
 
+void goBackBy1(FILE* f) {
+    int p = ftell(f);
+    if (p != 0) {
+        fseek(f, p - 1, SEEK_SET);
+    }
+}
+
 void loadStudentsFromFile(char *filePath, STUDENT *TAIL) {
     FILE *file = fopen(filePath, "r");
     if (file == NULL) {
@@ -167,11 +174,6 @@ void loadStudentsFromFile(char *filePath, STUDENT *TAIL) {
 
     while (1) {
         // Odczytaj imię
-        int f = ftell(file);
-        if (f != 0) {
-            fseek(file, f - 1, SEEK_SET);
-        }
-        f = ftell(file);
         if (!fgets(buffer, sizeof(buffer), file)) {
             break; // Koniec pliku
         }
@@ -203,6 +205,7 @@ void loadStudentsFromFile(char *filePath, STUDENT *TAIL) {
             ErrorExit("Memory allocation failed for address\n", 400);
         }
         strcpy(tmp->address, buffer);
+        goBackBy1(file);
 
         // Odczytaj wiek
         result = fscanf(file, "%d", &tmp->age);
