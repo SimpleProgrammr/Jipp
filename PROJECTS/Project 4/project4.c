@@ -38,6 +38,10 @@ int main() {
         "3. LIFO List\n"
         "4. LIFO Table\n");
     int *choice = calloc(sizeof(int), 1);
+    if (choice == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    }
     scanf("%d", choice);
 
     switch (*choice) {
@@ -66,9 +70,11 @@ void FIFO_list_run() {
     int choice = -1;
 
     LIST *HEAD = NULL, *TAIL = NULL;
-    addStudent(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
-    addStudent(&HEAD, &TAIL, &(STUDENT){"#2", "#33", 2});
-    addStudent(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+
+    addStudentDEBUG(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
+    addStudentDEBUG(&HEAD, &TAIL, &(STUDENT){"#2", "#33", 2});
+    addStudentDEBUG(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+
     while (1) {
         printf("Choose operation: \n"
             "1. Add element\n"
@@ -88,23 +94,28 @@ void FIFO_list_run() {
                 addStudent(&HEAD, &TAIL, st);
                 break;
             case PULL_ELEMENT:
-                pullElement(&HEAD, &TAIL);
+                pullElement(&HEAD, &TAIL, true);
                 break;
             case SEARCH_ELEMENT:
                 searchElement(HEAD, TAIL, searchModeSelection());
                 break;
             case PRINT_ELEMENTS:
+            printAllElements(&HEAD, &TAIL);
                 break;
             case COUNT_ELEMENTS:
+                printf("There are %ld elements\n\n", countElement(&HEAD, &TAIL));
                 break;
             case CLEAR_ALL_ELEMENTS:
+                clearAllElements(&HEAD, &TAIL);
                 break;
             case SAVE_TO_BINARY:
+                saveAllElementsToFile(&HEAD, &TAIL);
                 break;
             case READ_FROM_BINARY:
+                readAllElementsToFile(&HEAD, &TAIL);
                 break;
             case EXIT:
-                //TODO:CLEAR ALL ELEMENTS
+                clearAllElements(&HEAD, &TAIL);
                 return;
             default:
                 fprintf(stderr, "Invalid choice\n");
@@ -115,7 +126,10 @@ void FIFO_list_run() {
 
 STUDENT *create_student() {
     STUDENT *st = calloc(1, sizeof(STUDENT));
-
+    if (st == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    }
     st->name = set_text("Enter name: ");
     st->surname = set_text("Enter surname: ");
     st->bYear = get_int("Enter birth year: ");

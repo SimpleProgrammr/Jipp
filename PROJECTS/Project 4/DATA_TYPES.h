@@ -27,7 +27,11 @@ char *set_text(char *msg) {
     }
     size_t len = strlen(buff);
     char *str = calloc(strlen(buff) + 1, sizeof(char));
-    memcpy(str, buff, sizeof(char)*len);
+    if (str == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    }
+    memcpy(str, buff, len);
 
     return str;
 }
@@ -36,7 +40,7 @@ long get_long(char *msg) {
     long val = 0;
 wrongInput:
     printf("%s", msg);
-    if (scanf("%d", &val) == 0) {
+    if (scanf("%ld", &val) == 0) {
         fprintf(stderr, "Wrong input\n");
         goto wrongInput;
     }
@@ -55,3 +59,4 @@ wrongInput:
 
     return val;
 }
+
