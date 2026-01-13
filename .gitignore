@@ -1,5 +1,7 @@
 *.exe
 *.txt
+editor.xml
+/.idea
 /w8
 /w9
 /w10

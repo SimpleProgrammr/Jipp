@@ -84,4 +84,10 @@
 
 ## LAB10
 
-- [Zadanie 1]()
+- Zadanie 2
+  - [z2.c](./LAB10/z2.c)
+  - [z2-err.h](./LAB10/z2-err.h)
+  - [z2-io.h](./LAB10/z2-io.h)
+- Zadanie 4
+  - [z4.c](./LAB10/z4.c)
+  - [z4-data.h](./LAB10/z4-data.h)
