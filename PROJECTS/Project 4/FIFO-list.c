@@ -94,6 +94,7 @@ void fifo_list_add_element(LIST **HEAD, LIST **TAIL, LIST *EL) {
         *TAIL = EL;
     } else {
         (*TAIL)->prev = EL;
+        EL->next = *TAIL;
         *TAIL = EL;
     }
 }
