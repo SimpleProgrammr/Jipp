@@ -54,13 +54,13 @@ int main() {
             FIFO_list_run();
             break;
         case FIFO_TABLE:
-
+            //TODO
             break;
         case LIFO_LIST:
-
+            LIFO_list_run();
             break;
         case LIFO_TABLE:
-
+            //TODO
             break;
         default:
             fprintf(stderr, "Invalid choice\n");
@@ -132,11 +132,11 @@ void FIFO_list_run() {
 void LIFO_list_run() {
     int choice = -1;
 
-    LIST *HEAD = NULL, *TAIL = NULL;
+    LIST *TOP = NULL, *BOTTOM = NULL;
 
-    lifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
-    lifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#33", 2});
-    lifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+    lifo_list_add_student_debug(&TOP, &BOTTOM, &(STUDENT){"#1", "#11", 1});
+    lifo_list_add_student_debug(&TOP, &BOTTOM, &(STUDENT){"#2", "#22", 2});
+    lifo_list_add_student_debug(&TOP, &BOTTOM, &(STUDENT){"#3", "#33", 3});
 
     while (1) {
         printf("Choose operation: \n"
@@ -154,31 +154,31 @@ void LIFO_list_run() {
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
-                lifo_list_add_student(&HEAD, &TAIL, st);
+                lifo_list_add_student(&TOP, &BOTTOM, st);
                 break;
             case PULL_ELEMENT:
-                lifo_list_pull_element(&HEAD, &TAIL, true);
+                lifo_list_pull_element(&TOP, &BOTTOM, true);
                 break;
             case SEARCH_ELEMENT:
-                lifo_list_search_element(HEAD, TAIL, searchModeSelection());
+                lifo_list_search_element(TOP, BOTTOM, searchModeSelection());
                 break;
             case PRINT_ELEMENTS:
-                lifo_list_print_all_elements(&HEAD, &TAIL);
+                lifo_list_print_all_elements(&TOP, &BOTTOM);
                 break;
             case COUNT_ELEMENTS:
-                printf("There are %ld elements\n\n", fifo_list_count_elements(&HEAD, &TAIL));
+                printf("There are %ld elements\n\n", fifo_list_count_elements(&TOP, &BOTTOM));
                 break;
             case CLEAR_ALL_ELEMENTS:
-                lifo_list_clear_all_elements(&HEAD, &TAIL);
+                lifo_list_clear_all_elements(&TOP, &BOTTOM);
                 break;
             case SAVE_TO_BINARY:
-                lifo_list_save_all_elements_to_file(&HEAD, &TAIL);
+                lifo_list_save_all_elements_to_file(&TOP, &BOTTOM);
                 break;
             case READ_FROM_BINARY:
-                lifo_list_read_all_elements_from_file(&HEAD, &TAIL);
+                lifo_list_read_all_elements_from_file(&TOP, &BOTTOM);
                 break;
             case EXIT:
-                lifo_list_clear_all_elements(&HEAD, &TAIL);
+                lifo_list_clear_all_elements(&TOP, &BOTTOM);
                 return;
             default:
                 fprintf(stderr, "Invalid choice\n");
