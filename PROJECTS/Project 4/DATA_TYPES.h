@@ -15,7 +15,38 @@ typedef struct list {
     struct list *prev;
 } LIST;
 
-STUDENT *TABLE;
+STUDENT *resizeArray(STUDENT *arr, size_t newSize) {
+    STUDENT *newArr = (STUDENT *) realloc(arr, newSize * sizeof(STUDENT));
+    if (newArr == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    }
+    memset(newArr, 0, newSize * sizeof(STUDENT));
+    memcpy(newArr, arr, newSize * sizeof(STUDENT));
+    return newArr;
+}
+
+void shiftLeft(STUDENT **arr, size_t arrSize) {
+    if (arr[0] != NULL) {
+        fprintf(stderr, "Memory leak on shiftLeft()\nCheck if it getting freed before shift\n\n");
+    }
+    if (arrSize < 1) {
+        fprintf(stderr, "Empty Array\n");
+        return;
+    }
+    memmove(arr[1], *arr, (arrSize) * sizeof(STUDENT));
+}
+
+void shiftRight(STUDENT **arr, size_t arrSize) {
+    if (arr[0] != NULL) {
+        fprintf(stderr, "Memory leak on shiftLeft()\nCheck if it getting freed before shift\n\n");
+    }
+    if (arrSize < 1) {
+        fprintf(stderr, "Empty Array\n");
+        return;
+    }
+    memmove(*arr, arr[1], (arrSize) * sizeof(STUDENT));
+}
 
 char *set_text(char *msg) {
     char buff[100];

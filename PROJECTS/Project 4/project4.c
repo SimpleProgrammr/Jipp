@@ -129,6 +129,64 @@ void FIFO_list_run() {
     }
 }
 
+void FIFO_table_run() {
+    int choice = -1;
+
+    STUDENT **studentsTable = NULL;
+
+    // fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
+    // fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#22", 2});
+    // fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+
+    while (1) {
+        printf("Choose operation: \n"
+            "1. Add element\n"
+            "2. Pull element\n"
+            "3. Search element\n"
+            "4. Print elements\n"
+            "5. Count elements\n"
+            "6. Clear all elements\n"
+            "7. Write to .bin file\n"
+            "8. Read from .bin file\n"
+            "0. Exit\n");
+        choice = -1;
+        scanf("%d", &choice);
+        switch (choice) {
+            case ADD_ELEMENT:
+                STUDENT *st = create_student();
+                //fifo_list_add_student(&HEAD, &TAIL, st);
+                break;
+            case PULL_ELEMENT:
+                //fifo_list_pull_element(&HEAD, &TAIL, true);
+                break;
+            case SEARCH_ELEMENT:
+                //fifo_list_search_element(HEAD, TAIL, searchModeSelection());
+                break;
+            case PRINT_ELEMENTS:
+                //fifo_list_print_all_elements(&HEAD, &TAIL);
+                break;
+            case COUNT_ELEMENTS:
+                //printf("There are %ld elements\n\n", fifo_list_count_elements(&HEAD, &TAIL));
+                break;
+            case CLEAR_ALL_ELEMENTS:
+                //fifo_list_clear_all_elements(&HEAD, &TAIL);
+                break;
+            case SAVE_TO_BINARY:
+                //fifo_list_save_all_elements_to_file(&HEAD, &TAIL);
+                break;
+            case READ_FROM_BINARY:
+                //fifo_list_read_all_elements_from_file(&HEAD, &TAIL);
+                break;
+            case EXIT:
+                //fifo_list_clear_all_elements(&HEAD, &TAIL);
+                return;
+            default:
+                fprintf(stderr, "Invalid choice\n");
+                exit(10);
+        }
+    }
+}
+
 void LIFO_list_run() {
     int choice = -1;
 
