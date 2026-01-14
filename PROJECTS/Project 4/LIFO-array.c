@@ -90,7 +90,7 @@ STUDENT ** lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize)
     for (long i = total_students - 1; i >= 0; i--) {
         pullRet *pr = lifo_array_pull_student(tempArr, &total_students, false);
         STUDENT *st = pr->st;
-        arr = lifo_array_add_student(arr, studentsArraySize, st, true);
+        arr = lifo_array_add_student(arr, studentsArraySize, st, false);
     }
     return arr;
 }
