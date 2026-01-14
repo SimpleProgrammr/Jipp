@@ -71,9 +71,9 @@ void FIFO_list_run() {
 
     LIST *HEAD = NULL, *TAIL = NULL;
 
-    addStudentDEBUG(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
-    addStudentDEBUG(&HEAD, &TAIL, &(STUDENT){"#2", "#33", 2});
-    addStudentDEBUG(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
+    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#33", 2});
+    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
 
     while (1) {
         printf("Choose operation: \n"
@@ -91,31 +91,31 @@ void FIFO_list_run() {
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
-                addStudent(&HEAD, &TAIL, st);
+                fifo_list_add_student(&HEAD, &TAIL, st);
                 break;
             case PULL_ELEMENT:
-                pullElement(&HEAD, &TAIL, true);
+                fifo_list_pull_element(&HEAD, &TAIL, true);
                 break;
             case SEARCH_ELEMENT:
-                searchElement(HEAD, TAIL, searchModeSelection());
+                fifo_list_search_element(HEAD, TAIL, searchModeSelection());
                 break;
             case PRINT_ELEMENTS:
-            printAllElements(&HEAD, &TAIL);
+            fifo_list_print_all_elements(&HEAD, &TAIL);
                 break;
             case COUNT_ELEMENTS:
-                printf("There are %ld elements\n\n", countElement(&HEAD, &TAIL));
+                printf("There are %ld elements\n\n", fifo_list_count_elements(&HEAD, &TAIL));
                 break;
             case CLEAR_ALL_ELEMENTS:
-                clearAllElements(&HEAD, &TAIL);
+                fifo_list_clear_all_elements(&HEAD, &TAIL);
                 break;
             case SAVE_TO_BINARY:
-                saveAllElementsToFile(&HEAD, &TAIL);
+                fifo_list_save_all_elements_to_file(&HEAD, &TAIL);
                 break;
             case READ_FROM_BINARY:
-                readAllElementsToFile(&HEAD, &TAIL);
+                fifo_list_read_all_elements_from_file(&HEAD, &TAIL);
                 break;
             case EXIT:
-                clearAllElements(&HEAD, &TAIL);
+                fifo_list_clear_all_elements(&HEAD, &TAIL);
                 return;
             default:
                 fprintf(stderr, "Invalid choice\n");
