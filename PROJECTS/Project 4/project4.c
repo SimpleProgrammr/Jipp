@@ -1,16 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "DATA_TYPES.h"
 #include "FIFO-list.c"
 #include "FIFO-array.c"
 #include "LIFO-list.c"
-#include "FIFO-array.c"
+#include "LIFO-array.c"
 
 enum DATA_TYPE_MODE {
     FIFO_LIST = 1,
-    FIFO_TABLE,
+    FIFO_ARRAY,
     LIFO_LIST,
-    LIFO_TABLE
+    LIFO_ARRAY
 };
 
 enum CHOSEN_OPERATION {
@@ -30,10 +31,7 @@ STUDENT *create_student();
 void FIFO_list_run();
 void LIFO_list_run();
 void FIFO_array_run();
-
-//TODO: void FIFO_array_run();
-
-void LIFO_tabe_run();
+void LIFO_array_run();
 
 short searchModeSelection();
 
@@ -54,14 +52,14 @@ int main() {
         case FIFO_LIST:
             FIFO_list_run();
             break;
-        case FIFO_TABLE:
+        case FIFO_ARRAY:
             FIFO_array_run();
             break;
         case LIFO_LIST:
             LIFO_list_run();
             break;
-        case LIFO_TABLE:
-            //TODO
+        case LIFO_ARRAY:
+            LIFO_array_run();
             break;
         default:
             fprintf(stderr, "Invalid choice\n");
@@ -137,10 +135,10 @@ void FIFO_array_run() {
     long studentsArraySize = 0;
 
     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
-    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
-    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
-    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
-    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
+    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
+    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
+    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
+    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
 
     while (1) {
         printf("Choose operation: \n"
@@ -158,32 +156,33 @@ void FIFO_array_run() {
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
-                studentsArray = fifo_array_add_student(studentsArray, &studentsArraySize, st);
+                studentsArray = fifo_array_add_student(studentsArray, &studentsArraySize, st, true);
                 break;
             case PULL_ELEMENT:
-                fifo_array_pull_student(studentsArray, &studentsArraySize);
+                pullRet *pr = fifo_array_pull_student(studentsArray, &studentsArraySize, true);
+                studentsArray = pr->arr;
                 break;
             case SEARCH_ELEMENT:
-                //fifo_list_search_element(HEAD, TAIL, searchModeSelection());
+                studentsArray = fifo_array_search_element(studentsArray, &studentsArraySize, searchModeSelection());
                 break;
             case PRINT_ELEMENTS:
-                //fifo_list_print_all_elements(&HEAD, &TAIL);
+                studentsArray = fifo_array_print_all_students(studentsArray, &studentsArraySize);
                 break;
             case COUNT_ELEMENTS:
-                //printf("There are %ld elements\n\n", fifo_list_count_elements(&HEAD, &TAIL));
+                printf("There are %ld elements\n\n", studentsArraySize);
                 break;
             case CLEAR_ALL_ELEMENTS:
-                //fifo_list_clear_all_elements(&HEAD, &TAIL);
+                studentsArray = fifo_array_clear_all_elements(studentsArray, &studentsArraySize);
                 break;
             case SAVE_TO_BINARY:
-                //fifo_list_save_all_elements_to_file(&HEAD, &TAIL);
+                studentsArray = fifo_array_save_all_elements_to_file(studentsArray,&studentsArraySize);
                 break;
             case READ_FROM_BINARY:
-                //fifo_list_read_all_elements_from_file(&HEAD, &TAIL);
+                studentsArray = fifo_array_read_all_elements_from_file(studentsArray,&studentsArraySize);
                 break;
             case EXIT:
-                //fifo_list_clear_all_elements(&HEAD, &TAIL);
-                return;
+                fifo_array_clear_all_elements(studentsArray, &studentsArraySize);
+                exit(0);
             default:
                 fprintf(stderr, "Invalid choice\n");
                 exit(10);
@@ -242,6 +241,68 @@ void LIFO_list_run() {
             case EXIT:
                 lifo_list_clear_all_elements(&TOP, &BOTTOM);
                 return;
+            default:
+                fprintf(stderr, "Invalid choice\n");
+                exit(10);
+        }
+    }
+}
+
+void LIFO_array_run() {
+    int choice = -1;
+
+    STUDENT **studentsArray = NULL;
+    long studentsArraySize = 0;
+
+    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
+    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
+    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
+    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
+    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
+
+    while (1) {
+        printf("Choose operation: \n"
+            "1. Add element\n"
+            "2. Pull element\n"
+            "3. Search element\n"
+            "4. Print elements\n"
+            "5. Count elements\n"
+            "6. Clear all elements\n"
+            "7. Write to .bin file\n"
+            "8. Read from .bin file\n"
+            "0. Exit\n");
+        choice = -1;
+        scanf("%d", &choice);
+        switch (choice) {
+            case ADD_ELEMENT:
+                STUDENT *st = create_student();
+                studentsArray = lifo_array_add_student(studentsArray, &studentsArraySize, st, true);
+                break;
+            case PULL_ELEMENT:
+                pullRet *pr = lifo_array_pull_student(studentsArray, &studentsArraySize, true);
+                studentsArray = pr->arr;
+                break;
+            case SEARCH_ELEMENT:
+                studentsArray = lifo_array_search_element(studentsArray, &studentsArraySize, searchModeSelection());
+                break;
+            case PRINT_ELEMENTS:
+                studentsArray = lifo_array_print_all_students(studentsArray, &studentsArraySize);
+                break;
+            case COUNT_ELEMENTS:
+                printf("There are %ld elements\n\n", studentsArraySize);
+                break;
+            case CLEAR_ALL_ELEMENTS:
+                studentsArray = lifo_array_clear_all_elements(studentsArray, &studentsArraySize);
+                break;
+            case SAVE_TO_BINARY:
+                studentsArray = lifo_array_save_all_elements_to_file(studentsArray,&studentsArraySize);
+                break;
+            case READ_FROM_BINARY:
+                studentsArray = lifo_array_read_all_elements_from_file(studentsArray,&studentsArraySize);
+                break;
+            case EXIT:
+                lifo_array_clear_all_elements(studentsArray, &studentsArraySize);
+                exit(0);
             default:
                 fprintf(stderr, "Invalid choice\n");
                 exit(10);

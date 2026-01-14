@@ -15,8 +15,31 @@ typedef struct list {
     struct list *prev;
 } LIST;
 
+typedef struct {
+    STUDENT* st;
+    STUDENT** arr;
+} pullRet;
+
 STUDENT **resizeArray(STUDENT **arr, size_t newSize) {
-    STUDENT **newArr = (STUDENT **) realloc(arr, newSize * sizeof(STUDENT *));
+    if (newSize == 0 && arr != NULL) {
+        STUDENT *st = arr[0];
+        if (st!=NULL) {
+            if (st->name != NULL)
+                free(st->name);
+            if (st->surname != NULL)
+                free(st->surname);
+            free(st);
+            st = NULL;
+        }
+        free(arr);
+        return NULL;
+    }
+    STUDENT **newArr = NULL;
+    if (arr == NULL && newSize > 0) {
+        newArr = (STUDENT **)calloc(newSize, sizeof(STUDENT *));
+    }else
+        newArr = (STUDENT **) realloc(arr, newSize * sizeof(STUDENT *));
+
     if (newArr == NULL) {
         fprintf(stderr, "Unable to resize array!");
         exit(-300);
@@ -40,13 +63,16 @@ void shiftLeft(STUDENT **arr, size_t arrSize) {
 
 void shiftRight(STUDENT **arr, size_t arrSize) {
     if (arr[0] != NULL) {
-        fprintf(stderr, "Memory leak on shiftLeft()\nCheck if it getting freed before shift\n\n");
+        fprintf(stderr, "Memory leak on shiftRight()\nCheck if it getting freed before shift\n\n");
     }
     if (arrSize < 1) {
         fprintf(stderr, "Empty Array\n");
         return;
     }
-    memmove(*arr, arr[arrSize-1], (arrSize) * sizeof(STUDENT));
+    for (int i = 1; i < arrSize; i++) {
+        arr[i] = arr[i-1];
+    }
+    arr[0] = NULL;
 }
 
 char *set_text(char *msg) {
