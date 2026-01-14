@@ -126,7 +126,7 @@ STUDENT ** fifo_array_save_all_elements_to_file(STUDENT** arr, long *studentsArr
     fwrite(studentsArraySize, sizeof(long), 1, file);
 
     //Pulling to save
-    for (long i = *studentsArraySize-1; i >= 0 ; i++) {
+    for (long i = 0; i < *studentsArraySize; i++) {
         pullRet *pr = fifo_array_pull_student(arr, studentsArraySize, false);
         STUDENT *tmpStudent = pr->st;
         arr = pr->arr;
