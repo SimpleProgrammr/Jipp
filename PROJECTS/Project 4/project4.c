@@ -136,11 +136,11 @@ void FIFO_array_run() {
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
 
-     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
-     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
-     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
-     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
-     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
+    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
+    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
+    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
+    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
+    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
 
     while (1) {
         printf("Choose operation: \n"
