@@ -56,8 +56,6 @@ char **getTextFromFile(const char *name, const char *mode, int *size) {
 
             if (tmp == NULL) {
                 printf("Memory reallocation failed\n");
-                free(tmp);
-                tmp = NULL;
                 exit(0);
             }
             text = tmp;

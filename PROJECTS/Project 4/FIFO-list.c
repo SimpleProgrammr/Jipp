@@ -177,8 +177,6 @@ void fifo_list_search_element(LIST *HEAD, LIST *TAIL, short mode) {
     ST = NULL;
 }
 
-
-
 LIST *fifo_list_pull_element(LIST **HEAD, LIST **TAIL, bool post) {
     if (*HEAD == NULL && *TAIL == NULL) {
         fprintf(stderr, "Nothing to pull\n");

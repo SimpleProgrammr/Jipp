@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "DATA_TYPES.h"
 #include "FIFO-list.c"
-#include "FIFO-table.c"
+#include "FIFO-array.c"
 #include "LIFO-list.c"
-#include "FIFO-table.c"
+#include "FIFO-array.c"
 
 enum DATA_TYPE_MODE {
     FIFO_LIST = 1,
@@ -29,8 +29,9 @@ STUDENT *create_student();
 
 void FIFO_list_run();
 void LIFO_list_run();
+void FIFO_array_run();
 
-void FIFO_tabe_run();
+//TODO: void FIFO_array_run();
 
 void LIFO_tabe_run();
 
@@ -39,9 +40,9 @@ short searchModeSelection();
 int main() {
     printf("Which mode to use?\n"
         "1. FIFO List\n"
-        "2. FIFO Table\n"
+        "2. FIFO Array\n"
         "3. LIFO List\n"
-        "4. LIFO Table\n");
+        "4. LIFO Array\n");
     int *choice = calloc(sizeof(int), 1);
     if (choice == NULL) {
         fprintf(stderr, "Unable to allocate memory");
@@ -54,7 +55,7 @@ int main() {
             FIFO_list_run();
             break;
         case FIFO_TABLE:
-            //TODO
+            FIFO_array_run();
             break;
         case LIFO_LIST:
             LIFO_list_run();
@@ -129,14 +130,17 @@ void FIFO_list_run() {
     }
 }
 
-void FIFO_table_run() {
+void FIFO_array_run() {
     int choice = -1;
 
-    STUDENT **studentsTable = NULL;
+    STUDENT **studentsArray = NULL;
+    long studentsArraySize = 0;
 
-    // fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
-    // fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#22", 2});
-    // fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
+     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
+     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
+     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
+     studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
 
     while (1) {
         printf("Choose operation: \n"
@@ -154,10 +158,10 @@ void FIFO_table_run() {
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
-                //fifo_list_add_student(&HEAD, &TAIL, st);
+                studentsArray = fifo_array_add_student(studentsArray, &studentsArraySize, st);
                 break;
             case PULL_ELEMENT:
-                //fifo_list_pull_element(&HEAD, &TAIL, true);
+                fifo_array_pull_student(studentsArray, &studentsArraySize);
                 break;
             case SEARCH_ELEMENT:
                 //fifo_list_search_element(HEAD, TAIL, searchModeSelection());
