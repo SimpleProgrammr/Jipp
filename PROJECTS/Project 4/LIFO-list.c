@@ -132,7 +132,7 @@ long lifo_list_count_elements(LIST **TOP, LIST **BOTTOM) {
     return count;
 }
 
-void lifo_list_search_element(LIST *TOP, LIST *BOTTOM, short mode) {
+void lifo_list_search_element(LIST **TOP, LIST **BOTTOM, short mode) {
     STUDENT *ST = calloc(1, sizeof(STUDENT));
     if (ST == NULL) {
         fprintf(stderr, "Unable to allocate memory");
@@ -153,10 +153,11 @@ void lifo_list_search_element(LIST *TOP, LIST *BOTTOM, short mode) {
             free(ST);
             return;
     }
-    long countedElements = lifo_list_count_elements(&TOP, &BOTTOM);
-    for (long i = 0; i < countedElements; i++) {
-        LIST *tmpElement = lifo_list_pull_element(&TOP, &BOTTOM, false);
-        lifo_list_add_element(&TOP, &BOTTOM, tmpElement);
+    LIST *tmpTOP = NULL, *tmpBOTTOM = NULL;
+    //Pulling to count
+    while (*TOP != NULL && *BOTTOM != NULL) {
+        LIST *tmpElement = lifo_list_pull_element(TOP, BOTTOM, false);
+        lifo_list_add_element(&tmpTOP, &tmpBOTTOM, tmpElement);
         switch (mode) {
             case 1: //by Name
                 if (strcmp(ST->name, tmpElement->data->name) == 0)
@@ -173,10 +174,14 @@ void lifo_list_search_element(LIST *TOP, LIST *BOTTOM, short mode) {
             default: ;
         }
     }
+    //Putting back on place
+    while (tmpTOP != NULL && tmpBOTTOM != NULL) {
+        LIST *tmpEl = lifo_list_pull_element(&tmpTOP, &tmpBOTTOM, false);
+        lifo_list_add_element(TOP, BOTTOM, tmpEl);
+    }
     free(ST);
     ST = NULL;
 }
-
 
 LIST *lifo_list_pull_element(LIST **TOP, LIST **BOTTOM, bool post) {
     if (*TOP == NULL && *BOTTOM == NULL) {
@@ -228,7 +233,6 @@ void lifo_list_save_all_elements_to_file(LIST **TOP, LIST **BOTTOM) {
     long count = lifo_list_count_elements(TOP, BOTTOM);
     fwrite(&count, sizeof(long), 1, file);
 
-
     LIST *tmpTOP = NULL, *tmpBOTTOM = NULL;
     //Pulling to save
     while (*TOP != NULL && *BOTTOM != NULL) {
@@ -236,6 +240,7 @@ void lifo_list_save_all_elements_to_file(LIST **TOP, LIST **BOTTOM) {
         lifo_list_add_element(&tmpTOP, &tmpBOTTOM, tmpEl);
         savePackageToFile(file, tmpEl->data);
     }
+    printf("Saved %ld elements to file\n\n", count);
     //Putting back on place
     while (tmpTOP != NULL && tmpBOTTOM != NULL) {
         LIST *tmpEl = lifo_list_pull_element(&tmpTOP, &tmpBOTTOM, false);
@@ -249,10 +254,13 @@ void lifo_list_read_all_elements_from_file(LIST **TOP, LIST **BOTTOM) {
     long count = 0;
     fread(&count, sizeof(long), 1, file);
 
+    long c = 0;
     for (long i = 0; i < count; i++) {
         STUDENT *tmpElement = readPackageFromFile(file);
         lifo_list_add_student(TOP, BOTTOM, tmpElement);
+        c++;
     }
+    printf("Added %ld elements form file\n\n", count);
 
     fclose(file);
 }

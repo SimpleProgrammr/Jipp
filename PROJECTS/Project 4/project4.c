@@ -77,7 +77,7 @@ void FIFO_list_run() {
     LIST *HEAD = NULL, *TAIL = NULL;
 
     fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
-    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#33", 2});
+    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#22", 2});
     fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
 
     while (1) {
@@ -160,7 +160,7 @@ void LIFO_list_run() {
                 lifo_list_pull_element(&TOP, &BOTTOM, true);
                 break;
             case SEARCH_ELEMENT:
-                lifo_list_search_element(TOP, BOTTOM, searchModeSelection());
+                lifo_list_search_element(&TOP, &BOTTOM, searchModeSelection());
                 break;
             case PRINT_ELEMENTS:
                 lifo_list_print_all_elements(&TOP, &BOTTOM);

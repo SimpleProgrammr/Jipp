@@ -229,14 +229,15 @@ void fifo_list_save_all_elements_to_file(LIST **HEAD, LIST **TAIL) {
     long count = fifo_list_count_elements(HEAD, TAIL);
     fwrite(&count, sizeof(long), 1, file);
 
-
     LIST *tmpHEAD = NULL, *tmpTAIL = NULL;
+
     //Pulling to save
     while (*HEAD != NULL && *TAIL != NULL) {
         LIST *tmpEl = fifo_list_pull_element(HEAD, TAIL, true);
         fifo_list_add_element(&tmpHEAD, &tmpTAIL, tmpEl);
         savePackageToFile(file,tmpEl->data);
     }
+    printf("Saved %ld elements to file\n\n", count);
     //Putting back on place
     while (tmpHEAD != NULL && tmpTAIL != NULL) {
         LIST *tmpEl = fifo_list_pull_element(&tmpHEAD, &tmpTAIL, false);
@@ -249,11 +250,13 @@ void fifo_list_read_all_elements_from_file(LIST **HEAD, LIST **TAIL) {
     FILE* file = fopen("Elements.bin", "rb");
     long count = 0;
     fread(&count, sizeof(long), 1, file);
-
+    long c = 0;
     for (long i = 0; i < count; i++) {
         STUDENT* tmpElement = readPackageFromFile(file);
         fifo_list_add_student(HEAD, TAIL, tmpElement);
+        c++;
     }
+    printf("Added %ld elements form file\n\n", c);
 
     fclose(file);
 }
