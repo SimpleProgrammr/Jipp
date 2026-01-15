@@ -127,6 +127,8 @@ void convertTxtFileToBinFile() {
         st->bYear = strtol(buff, &endptr, 10);
 
         savePackageToFile(bin_file, st);
+        free(st->name);
+        free(st->surname);
     }
     fclose(txt_file);
     fclose(bin_file);
