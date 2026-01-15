@@ -1,4 +1,3 @@
-#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -7,6 +6,41 @@
 #include "FIFO-array.c"
 #include "LIFO-list.c"
 #include "LIFO-array.c"
+#ifdef _WIN32
+    #include <conio.h>
+#else
+    #include <termios.h>
+    #include <unistd.h>
+
+    char getch() {
+        char buf = 0;
+        struct termios old = {0};
+        fflush(stdout);
+
+        if (tcgetattr(0, &old) < 0)
+            perror("tcsetattr()");
+
+        old.c_lflag &= ~ICANON;
+        old.c_lflag &= ~ECHO;
+        old.c_cc[VMIN] = 1;
+        old.c_cc[VTIME] = 0;
+
+        if (tcsetattr(0, TCSANOW, &old) < 0)
+            perror("tcsetattr ICANON");
+
+        if (read(0, &buf, 1) < 0)
+            perror("read()");
+
+        old.c_lflag |= ICANON;
+        old.c_lflag |= ECHO;
+
+        if (tcsetattr(0, TCSADRAIN, &old) < 0)
+            perror("tcsetattr ~ICANON");
+
+        return buf;
+    }
+#endif
+
 
 enum DATA_TYPE_MODE {
     FIFO_LIST = 1,
@@ -36,7 +70,71 @@ void LIFO_array_run();
 
 short searchModeSelection();
 
+void convertTxtFileToBinFile() {
+    printf("Converting txt.file\n");
+    char buff[1024];
+    long total_lines_in_file = 0;
+    FILE * txt_file = fopen("dane.txt", "r");
+    FILE * bin_file = fopen("Elements.bin", "wb");
+    if (bin_file == NULL) {
+        fprintf(stderr, "Unable to open \"Elements.bin\" file");
+        exit(-404);
+    }
+    if (txt_file == NULL) {
+        fprintf(stderr, "Unable to open \"dane.txt\" file");
+        exit(-404);
+    }
+    while (fgets(buff, sizeof(buff), txt_file) != NULL) {
+        total_lines_in_file++;
+    }
+    long number_of_elements = total_lines_in_file/3;
+    fwrite(&number_of_elements, sizeof(long), 1, bin_file);
+    fclose(txt_file);
+    txt_file = fopen("dane.txt", "r");
+    if (txt_file == NULL) {
+        fprintf(stderr, "Unable to open \"dane.txt\" file");
+        exit(-404);
+    }
+
+    STUDENT* st = &(STUDENT){NULL, NULL , 0};
+
+
+    for (long i = 0; i < number_of_elements; i++) {
+        fgets(buff, sizeof(buff), txt_file);
+        int len = strlen(buff);
+        if (buff[len - 1] == '\n')
+            buff[len-1] = '\0';
+        st->name = calloc(len, sizeof(char));
+        if (st->name == NULL) {
+            fprintf(stderr, "Unable to allocate memory for name(convertTxtFileToBinFile();)\n\nn");
+            exit(-300);
+        }
+        strncpy(st->name, buff, len);
+
+        fgets(buff, sizeof(buff), txt_file);
+        len = strlen(buff);
+        if (buff[len - 1] == '\n')
+            buff[len-1] = '\0';
+        st->surname = calloc(len, sizeof(char));
+        if (st->surname == NULL) {
+            fprintf(stderr, "Unable to allocate memory for surname(convertTxtFileToBinFile();)\n\nn");
+            exit(-300);
+        }
+        strncpy(st->surname, buff, len);
+
+        fgets(buff, sizeof(buff), txt_file);
+        char* endptr;
+        st->bYear = strtol(buff, &endptr, 10);
+
+        savePackageToFile(bin_file, st);
+    }
+    fclose(txt_file);
+    fclose(bin_file);
+    printf("Conversion success...");
+}
+
 int main() {
+    convertTxtFileToBinFile();
     printf("Which mode to use?\n"
         "1. FIFO List\n"
         "2. FIFO Array\n"
