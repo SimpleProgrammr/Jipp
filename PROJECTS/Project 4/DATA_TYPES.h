@@ -1,4 +1,5 @@
 #pragma once
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,7 +77,7 @@ void shiftRight(STUDENT **arr, size_t arrSize) {
 }
 
 char *set_text(char *msg) {
-    char buff[100];
+    char buff[1024];
 
     printf("%s", msg);
     if (scanf("%s", buff) == 0) {
@@ -98,8 +99,10 @@ long get_long(char *msg) {
     long val = 0;
 wrongInput:
     printf("%s", msg);
+    fflush(stdin);
     if (scanf("%ld", &val) == 0) {
         fprintf(stderr, "Wrong input\n");
+        fflush(stderr);
         goto wrongInput;
     }
 
@@ -108,13 +111,65 @@ wrongInput:
 
 int get_int(char *msg) {
     int val = 0;
-wrongInput:
+
+    wrongInput:
     printf("%s", msg);
+    fflush(stdin);
     if (scanf("%d", &val) == 0) {
         fprintf(stderr, "Wrong input\n");
+        fflush(stderr);
         goto wrongInput;
     }
 
     return val;
 }
 
+int char_to_int(char ch) {
+    if (ch >= '0' && ch <= '9') {
+        return ch - '1' + 1;
+    }
+    return -1;
+}
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void postOperationName(int choice) {
+    clearConsole();
+    switch (choice) {
+        case 0:
+            printf("Exiting program...\n");
+            break;
+        case 1:
+            printf("Adding element\n");
+            break;
+        case 2:
+            printf("Pulling element\n");
+            break;
+        case 3:
+            printf("Searching element\n");
+            break;
+        case 4:
+            printf("Printing all elements\n");
+            break;
+        case 5:
+            printf("Counting elements\n");
+            break;
+        case 6:
+            printf("Clearing all elements\n");
+            break;
+        case 7:
+            printf("Coping to .bin file\n");
+            break;
+        case 8:
+            printf("Reading from .bin file\n");
+            break;
+        default:
+            break;
+    }
+}

@@ -1,3 +1,4 @@
+#include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -41,14 +42,8 @@ int main() {
         "2. FIFO Array\n"
         "3. LIFO List\n"
         "4. LIFO Array\n");
-    int *choice = calloc(sizeof(int), 1);
-    if (choice == NULL) {
-        fprintf(stderr, "Unable to allocate memory");
-        exit(-300);
-    }
-    scanf("%d", choice);
-
-    switch (*choice) {
+    int choice = char_to_int((char)getch());;
+    switch (choice) {
         case FIFO_LIST:
             FIFO_list_run();
             break;
@@ -66,16 +61,12 @@ int main() {
             exit(10);
     }
 
-    free(choice);
     return 0;
 }
 
 void FIFO_list_run() {
-    int choice = -1;
 
     LIST *HEAD = NULL, *TAIL = NULL;
-;
-
     while (1) {
         printf("Choose operation: \n"
             "1. Add element\n"
@@ -87,8 +78,8 @@ void FIFO_list_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        choice = -1;
-        scanf("%d", &choice);
+        int choice = char_to_int((char)getch());;
+        postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
@@ -120,14 +111,12 @@ void FIFO_list_run() {
                 return;
             default:
                 fprintf(stderr, "Invalid choice\n");
-                exit(10);
+                break;
         }
     }
 }
 
 void FIFO_array_run() {
-    int choice = -1;
-
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
 
@@ -142,8 +131,8 @@ void FIFO_array_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        choice = -1;
-        scanf("%d", &choice);
+        int choice = char_to_int((char)getch());
+        postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
@@ -177,14 +166,12 @@ void FIFO_array_run() {
                 exit(0);
             default:
                 fprintf(stderr, "Invalid choice\n");
-                exit(10);
+                break;
         }
     }
 }
 
 void LIFO_list_run() {
-    int choice = -1;
-
     LIST *TOP = NULL, *BOTTOM = NULL;
 
     while (1) {
@@ -198,8 +185,8 @@ void LIFO_list_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        choice = -1;
-        scanf("%d", &choice);
+        int choice = char_to_int((char)getch());
+        postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
@@ -231,14 +218,12 @@ void LIFO_list_run() {
                 return;
             default:
                 fprintf(stderr, "Invalid choice\n");
-                exit(10);
+                break;
         }
     }
 }
 
 void LIFO_array_run() {
-    int choice = -1;
-
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
 
@@ -253,8 +238,8 @@ void LIFO_array_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        choice = -1;
-        scanf("%d", &choice);
+        int choice = char_to_int((char)getch());
+        postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
                 STUDENT *st = create_student();
@@ -288,7 +273,7 @@ void LIFO_array_run() {
                 exit(0);
             default:
                 fprintf(stderr, "Invalid choice\n");
-                exit(10);
+                break;
         }
     }
 }
@@ -310,8 +295,7 @@ short searchModeSelection() {
         "1. By name\n"
         "2. By surname\n"
         "3. By year of birth\n");
-    int choice;
-    scanf("%d", &choice);
+    int choice = char_to_int((char)getch());;
     switch (choice) {
         case 1:
             return 1;
