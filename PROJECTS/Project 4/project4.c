@@ -36,7 +36,71 @@ void LIFO_array_run();
 
 short searchModeSelection();
 
+void convertTxtFileToBinFile() {
+    printf("Converting txt.file\n");
+    char buff[1024];
+    long total_lines_in_file = 0;
+    FILE * txt_file = fopen("dane.txt", "r");
+    FILE * bin_file = fopen("Elements.bin", "wb");
+    if (bin_file == NULL) {
+        fprintf(stderr, "Unable to open \"Elements.bin\" file");
+        exit(-404);
+    }
+    if (txt_file == NULL) {
+        fprintf(stderr, "Unable to open \"dane.txt\" file");
+        exit(-404);
+    }
+    while (fgets(buff, sizeof(buff), txt_file) != NULL) {
+        total_lines_in_file++;
+    }
+    long number_of_elements = total_lines_in_file/3;
+    fwrite(&number_of_elements, sizeof(long), 1, bin_file);
+    fclose(txt_file);
+    txt_file = fopen("dane.txt", "r");
+    if (txt_file == NULL) {
+        fprintf(stderr, "Unable to open \"dane.txt\" file");
+        exit(-404);
+    }
+
+    STUDENT* st = &(STUDENT){NULL, NULL , 0};
+
+
+    for (long i = 0; i < number_of_elements; i++) {
+        fgets(buff, sizeof(buff), txt_file);
+        int len = strlen(buff);
+        if (buff[len - 1] == '\n')
+            buff[len-1] = '\0';
+        st->name = calloc(len, sizeof(char));
+        if (st->name == NULL) {
+            fprintf(stderr, "Unable to allocate memory for name(convertTxtFileToBinFile();)\n\nn");
+            exit(-300);
+        }
+        strncpy(st->name, buff, len);
+
+        fgets(buff, sizeof(buff), txt_file);
+        len = strlen(buff);
+        if (buff[len - 1] == '\n')
+            buff[len-1] = '\0';
+        st->surname = calloc(len, sizeof(char));
+        if (st->surname == NULL) {
+            fprintf(stderr, "Unable to allocate memory for surname(convertTxtFileToBinFile();)\n\nn");
+            exit(-300);
+        }
+        strncpy(st->surname, buff, len);
+
+        fgets(buff, sizeof(buff), txt_file);
+        char* endptr;
+        st->bYear = strtol(buff, &endptr, 10);
+
+        savePackageToFile(bin_file, st);
+    }
+    fclose(txt_file);
+    fclose(bin_file);
+    printf("Conversion success...");
+}
+
 int main() {
+    convertTxtFileToBinFile();
     printf("Which mode to use?\n"
         "1. FIFO List\n"
         "2. FIFO Array\n"
