@@ -75,10 +75,7 @@ void lifo_array_print_student(const STUDENT *st) {
 }
 
 STUDENT ** lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize) {
-    if (*studentsArraySize == 1) {
-        lifo_array_print_student(arr[0]);
-        return arr;
-    }
+
     long total_students = 0;
     STUDENT ** tempArr = NULL;
     for (long i = *studentsArraySize -1 ; i >= 0; i--) {
@@ -90,6 +87,7 @@ STUDENT ** lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize)
     for (long i = total_students - 1; i >= 0; i--) {
         pullRet *pr = lifo_array_pull_student(tempArr, &total_students, false);
         STUDENT *st = pr->st;
+        tempArr = pr->arr;
         arr = lifo_array_add_student(arr, studentsArraySize, st, false);
     }
     return arr;
@@ -129,16 +127,29 @@ STUDENT ** lifo_array_save_all_elements_to_file(STUDENT** arr, long *studentsArr
     //<elements count>[int]
     fwrite(studentsArraySize, sizeof(long), 1, file);
 
-    //Pulling to save
-    for (long i = *studentsArraySize-1; i >= 0; i--) {
-        pullRet *pr = lifo_array_pull_student(arr, studentsArraySize, false);
-        STUDENT *tmpStudent = pr->st;
-        arr = pr->arr;
-        savePackageToFile(file,tmpStudent);
-
-        //Putting back on place
-        arr = lifo_array_add_student(arr, studentsArraySize, tmpStudent, true);
+    if (*studentsArraySize == 1) {
+        savePackageToFile(file,arr[0]);
+        fclose(file);
+        return arr;
     }
+
+    long total_students = 0;
+    STUDENT ** tempArr = NULL;
+    //Pulling to save
+    for (long i = *studentsArraySize -1 ; i >= 0; i--) {
+        pullRet *pr = lifo_array_pull_student(arr, studentsArraySize, false);
+        STUDENT *st = pr->st;
+        arr = pr->arr;
+        tempArr = lifo_array_add_student(tempArr, &total_students, st, true);
+    }
+    for (long i = total_students-1; i >= 0 ; i--) {
+        pullRet *pr = lifo_array_pull_student(tempArr, &total_students, false);
+        STUDENT *st = pr->st;
+        tempArr = pr->arr;
+        savePackageToFile(file,st);
+        arr = lifo_array_add_student(arr, studentsArraySize, st, false);
+    }
+
     printf("Saved %ld elements to file\n\n", *studentsArraySize);
     fclose(file);
     return arr;

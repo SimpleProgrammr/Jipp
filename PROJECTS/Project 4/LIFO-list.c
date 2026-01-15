@@ -238,12 +238,12 @@ void lifo_list_save_all_elements_to_file(LIST **TOP, LIST **BOTTOM) {
     while (*TOP != NULL && *BOTTOM != NULL) {
         LIST *tmpEl = lifo_list_pull_element(TOP, BOTTOM, true);
         lifo_list_add_element(&tmpTOP, &tmpBOTTOM, tmpEl);
-        savePackageToFile(file, tmpEl->data);
     }
     printf("Saved %ld elements to file\n\n", count);
     //Putting back on place
     while (tmpTOP != NULL && tmpBOTTOM != NULL) {
         LIST *tmpEl = lifo_list_pull_element(&tmpTOP, &tmpBOTTOM, false);
+        savePackageToFile(file, tmpEl->data);
         lifo_list_add_element(TOP, BOTTOM, tmpEl);
     }
     fclose(file);

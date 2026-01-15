@@ -74,10 +74,7 @@ void FIFO_list_run() {
     int choice = -1;
 
     LIST *HEAD = NULL, *TAIL = NULL;
-
-    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#1", "#11", 1});
-    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#2", "#22", 2});
-    fifo_list_add_student_debug(&HEAD, &TAIL, &(STUDENT){"#3", "#33", 3});
+;
 
     while (1) {
         printf("Choose operation: \n"
@@ -134,12 +131,6 @@ void FIFO_array_run() {
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
 
-    studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
-    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
-    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
-    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
-    //studentsArray = fifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
-
     while (1) {
         printf("Choose operation: \n"
             "1. Add element\n"
@@ -161,6 +152,7 @@ void FIFO_array_run() {
             case PULL_ELEMENT:
                 pullRet *pr = fifo_array_pull_student(studentsArray, &studentsArraySize, true);
                 studentsArray = pr->arr;
+                fifo_array_free_student(pr->st);
                 break;
             case SEARCH_ELEMENT:
                 studentsArray = fifo_array_search_element(studentsArray, &studentsArraySize, searchModeSelection());
@@ -194,10 +186,6 @@ void LIFO_list_run() {
     int choice = -1;
 
     LIST *TOP = NULL, *BOTTOM = NULL;
-
-    lifo_list_add_student_debug(&TOP, &BOTTOM, &(STUDENT){"#1", "#11", 1});
-    lifo_list_add_student_debug(&TOP, &BOTTOM, &(STUDENT){"#2", "#22", 2});
-    lifo_list_add_student_debug(&TOP, &BOTTOM, &(STUDENT){"#3", "#33", 3});
 
     while (1) {
         printf("Choose operation: \n"
@@ -254,12 +242,6 @@ void LIFO_array_run() {
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
 
-    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#1", "#11", 1});
-    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#2", "#22", 2});
-    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#3", "#33", 3});
-    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#4", "#44", 4});
-    studentsArray = lifo_array_add_student_debug(studentsArray, &studentsArraySize, &(STUDENT){"#5", "#55", 5});
-
     while (1) {
         printf("Choose operation: \n"
             "1. Add element\n"
@@ -281,6 +263,7 @@ void LIFO_array_run() {
             case PULL_ELEMENT:
                 pullRet *pr = lifo_array_pull_student(studentsArray, &studentsArraySize, true);
                 studentsArray = pr->arr;
+                lifo_array_free_student(pr->st);
                 break;
             case SEARCH_ELEMENT:
                 studentsArray = lifo_array_search_element(studentsArray, &studentsArraySize, searchModeSelection());

@@ -21,8 +21,8 @@ typedef struct {
 } pullRet;
 
 STUDENT **resizeArray(STUDENT **arr, size_t newSize) {
-    if (newSize == 0 && *arr != NULL) {
-        STUDENT *st = arr[0];
+    if (newSize == 0 && arr != NULL) {
+        STUDENT *st = *arr;
         if (st!=NULL) {
             if (st->name != NULL)
                 free(st->name);
