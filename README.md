@@ -8,6 +8,7 @@
     - [x] Temat nr 29
 - [Projekt 3](/PROJECTS/Project%203) (2.12.2025r.)
   - [X] Temat nr 29
+- [Projekt 4](/PROJECTS/Project%204) (13.01.2025r.)
 
 ### LAB 2
 
