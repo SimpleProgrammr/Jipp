@@ -200,12 +200,19 @@ STUDENT ** lifo_array_search_element(STUDENT** arr, long* studentArraySize, shor
             return arr;
     }
     long countedElements = *studentArraySize;
-    pullRet *tmpElement;
+    pullRet *tmpElement = calloc(1, sizeof(pullRet));
+    if (tmpElement == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    };
+    STUDENT *toCheck = NULL;
     for (long i = countedElements-1; i >=0; i--) {
-        if (*studentArraySize == 1)
+        if (*studentArraySize == 1) {
             tmpElement = &(pullRet){*arr, arr};
-        else {
+            toCheck = tmpElement->st;
+        } else {
             tmpElement = lifo_array_pull_student(arr, studentArraySize, false);
+            toCheck = tmpElement->st;
             arr = lifo_array_add_student(tmpElement->arr,studentArraySize, tmpElement->st, false);
         }
         switch (mode) {

@@ -160,39 +160,43 @@ STUDENT ** fifo_array_search_element(STUDENT** arr, long* studentArraySize, shor
             return arr;
     }
     long countedElements = *studentArraySize;
-    pullRet *tmpElement;
+    pullRet *tmpElement = calloc(1, sizeof(pullRet));
+    if (tmpElement == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    }
+    STUDENT *toCheck = NULL;
     for (long i = 0; i < countedElements; i++) {
         if (*studentArraySize == 1)
             tmpElement = &(pullRet){*arr, arr};
         else {
             tmpElement = fifo_array_pull_student(arr, studentArraySize, false);
+            toCheck = tmpElement->st;
             arr = fifo_array_add_student(tmpElement->arr,studentArraySize, tmpElement->st, false);
         }
         switch (mode) {
             case 1: //by Name
-                if (strcmp(ST->name, tmpElement->st->name) == 0) {
-                    STUDENT * ss = tmpElement->st;
+                if (strcmp(ST->name, toCheck->name) == 0) {
                     post_search_header();
-                    post_student(ss);
+                    post_student(toCheck);
                 }
                 break;
             case 2: //by Surname
-                if (strcmp(ST->surname, tmpElement->st->surname) == 0){
-                    STUDENT * ss = tmpElement->st;
+                if (strcmp(ST->surname, toCheck->surname) == 0) {
                     post_search_header();
-                    post_student(ss);
+                    post_student(toCheck);
                 }
                 break;
             case 3: //by bYear
-                if (ST->bYear == tmpElement->st->bYear){
-                    STUDENT * ss = tmpElement->st;
+                if (ST->bYear == toCheck->bYear) {
                     post_search_header();
-                    post_student(ss);
+                    post_student(toCheck);
                 }
                 break;
             default: ;
         }
     }
+    free(tmpElement);
     free(ST);
     ST = NULL;
     return arr;

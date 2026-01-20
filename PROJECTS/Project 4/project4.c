@@ -102,7 +102,7 @@ void convertTxtFileToBinFile() {
 
     for (long i = 0; i < number_of_elements; i++) {
         fgets(buff, sizeof(buff), txt_file);
-        int len = strlen(buff);
+        long len = strlen(buff);
         if (buff[len - 1] == '\n')
             buff[len-1] = '\0';
         st->name = calloc(len, sizeof(char));
@@ -143,7 +143,7 @@ int main() {
         "2. FIFO Array\n"
         "3. LIFO List\n"
         "4. LIFO Array\n");
-    int choice = char_to_int((char)getch());;
+    int choice = char_to_int(getch());
     switch (choice) {
         case FIFO_LIST:
             FIFO_list_run();
@@ -223,6 +223,7 @@ void FIFO_array_run() {
 
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
+
     while (1) {
         printf("Choose operation: \n"
             "1. Add element\n"
