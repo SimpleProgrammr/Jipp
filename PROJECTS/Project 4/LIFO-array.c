@@ -1,5 +1,6 @@
 #pragma once
 #include <stdbool.h>
+#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FileIO.h"
 

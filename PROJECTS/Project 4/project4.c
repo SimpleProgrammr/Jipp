@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FIFO-list.c"
 #include "FIFO-array.c"
@@ -163,7 +164,7 @@ int main() {
 }
 
 void FIFO_list_run() {
-
+    clearConsole();
     LIST *HEAD = NULL, *TAIL = NULL;
     while (1) {
         printf("Choose operation: \n"
@@ -184,7 +185,9 @@ void FIFO_list_run() {
                 fifo_list_add_student(&HEAD, &TAIL, st);
                 break;
             case PULL_ELEMENT:
-                fifo_list_pull_element(&HEAD, &TAIL, true);
+                LIST* s = fifo_list_pull_element(&HEAD, &TAIL, true);
+                fifo_list_free_element(&s);
+                free(s);
                 break;
             case SEARCH_ELEMENT:
                 fifo_list_search_element(HEAD, TAIL, searchModeSelection());
@@ -215,9 +218,9 @@ void FIFO_list_run() {
 }
 
 void FIFO_array_run() {
+
     STUDENT **studentsArray = NULL;
     long studentsArraySize = 0;
-
     while (1) {
         printf("Choose operation: \n"
             "1. Add element\n"
