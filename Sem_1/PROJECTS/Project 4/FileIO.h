@@ -1,7 +1,8 @@
+
 #pragma once
 #include "DATA_TYPES.h"
 
-void savePackageToFile(FILE *FILE, const STUDENT *ST) {
+void savePackageToFile(FILE* FILE, const STUDENT * ST) {
     //<txt1 len>[int]<TXT1>[char[]] <- NAME
     int len = strlen(ST->name);
     fwrite(&len, sizeof(int), 1, FILE);
@@ -16,8 +17,10 @@ void savePackageToFile(FILE *FILE, const STUDENT *ST) {
     fwrite(&(ST->bYear), sizeof(int), 1, FILE);
 }
 
-STUDENT *readPackageFromFile(FILE *FILE) {
-    STUDENT *ST = calloc(1, sizeof(STUDENT));
+STUDENT * readPackageFromFile(FILE* FILE) {
+    STUDENT * ST = calloc(1, sizeof(STUDENT));
+
+
     //<txt1 len>[int]<TXT1>[char[]] <- NAME
     int len = 0;
     fread(&len, sizeof(int), 1, FILE);
