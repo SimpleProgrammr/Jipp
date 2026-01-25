@@ -1,44 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FIFO-list.c"
 #include "FIFO-array.c"
 #include "LIFO-list.c"
 #include "LIFO-array.c"
 #ifdef _WIN32
-    #include <conio.h>
+#include <conio.h>
 #else
-    #include <termios.h>
-    #include <unistd.h>
+#include <termios.h>
+#include <unistd.h>
 
-    char getch() {
-        char buf = 0;
-        struct termios old = {0};
-        fflush(stdout);
+char getch() {
+    char buf = 0;
+    struct termios old = {0};
+    fflush(stdout);
 
-        if (tcgetattr(0, &old) < 0)
-            perror("tcsetattr()");
+    if (tcgetattr(0, &old) < 0)
+        perror("tcsetattr()");
 
-        old.c_lflag &= ~ICANON;
-        old.c_lflag &= ~ECHO;
-        old.c_cc[VMIN] = 1;
-        old.c_cc[VTIME] = 0;
+    old.c_lflag &= ~ICANON;
+    old.c_lflag &= ~ECHO;
+    old.c_cc[VMIN] = 1;
+    old.c_cc[VTIME] = 0;
 
-        if (tcsetattr(0, TCSANOW, &old) < 0)
-            perror("tcsetattr ICANON");
+    if (tcsetattr(0, TCSANOW, &old) < 0)
+        perror("tcsetattr ICANON");
 
-        if (read(0, &buf, 1) < 0)
-            perror("read()");
+    if (read(0, &buf, 1) < 0)
+        perror("read()");
 
-        old.c_lflag |= ICANON;
-        old.c_lflag |= ECHO;
+    old.c_lflag |= ICANON;
+    old.c_lflag |= ECHO;
 
-        if (tcsetattr(0, TCSADRAIN, &old) < 0)
-            perror("tcsetattr ~ICANON");
+    if (tcsetattr(0, TCSADRAIN, &old) < 0)
+        perror("tcsetattr ~ICANON");
 
-        return buf;
-    }
+    return buf;
+}
 #endif
 
 
@@ -64,18 +65,21 @@ enum CHOSEN_OPERATION {
 STUDENT *create_student();
 
 void FIFO_list_run();
+
 void LIFO_list_run();
+
 void FIFO_array_run();
+
 void LIFO_array_run();
 
 short searchModeSelection();
 
 void convertTxtFileToBinFile() {
-    printf("Converting txt.file\n");
+    printf("Converting txt -> bin\n");
     char buff[1024];
     long total_lines_in_file = 0;
-    FILE * txt_file = fopen("dane.txt", "r");
-    FILE * bin_file = fopen("Elements.bin", "wb");
+    FILE *txt_file = fopen("dane.txt", "r");
+    FILE *bin_file = fopen("Elements.bin", "wb");
     if (bin_file == NULL) {
         fprintf(stderr, "Unable to open \"Elements.bin\" file");
         exit(-404);
@@ -87,7 +91,7 @@ void convertTxtFileToBinFile() {
     while (fgets(buff, sizeof(buff), txt_file) != NULL) {
         total_lines_in_file++;
     }
-    long number_of_elements = total_lines_in_file/3;
+    long number_of_elements = total_lines_in_file / 3;
     fwrite(&number_of_elements, sizeof(long), 1, bin_file);
     fclose(txt_file);
     txt_file = fopen("dane.txt", "r");
@@ -96,14 +100,17 @@ void convertTxtFileToBinFile() {
         exit(-404);
     }
 
-    STUDENT* st = &(STUDENT){NULL, NULL , 0};
+    STUDENT *st = &(STUDENT)
+    {
+        NULL, NULL, 0
+    };
 
 
     for (long i = 0; i < number_of_elements; i++) {
         fgets(buff, sizeof(buff), txt_file);
-        int len = strlen(buff);
+        long len = strlen(buff);
         if (buff[len - 1] == '\n')
-            buff[len-1] = '\0';
+            buff[len - 1] = '\0';
         st->name = calloc(len, sizeof(char));
         if (st->name == NULL) {
             fprintf(stderr, "Unable to allocate memory for name(convertTxtFileToBinFile();)\n\nn");
@@ -114,7 +121,7 @@ void convertTxtFileToBinFile() {
         fgets(buff, sizeof(buff), txt_file);
         len = strlen(buff);
         if (buff[len - 1] == '\n')
-            buff[len-1] = '\0';
+            buff[len - 1] = '\0';
         st->surname = calloc(len, sizeof(char));
         if (st->surname == NULL) {
             fprintf(stderr, "Unable to allocate memory for surname(convertTxtFileToBinFile();)\n\nn");
@@ -123,7 +130,7 @@ void convertTxtFileToBinFile() {
         strncpy(st->surname, buff, len);
 
         fgets(buff, sizeof(buff), txt_file);
-        char* endptr;
+        char *endptr;
         st->bYear = strtol(buff, &endptr, 10);
 
         savePackageToFile(bin_file, st);
@@ -135,17 +142,18 @@ void convertTxtFileToBinFile() {
     }
     fclose(txt_file);
     fclose(bin_file);
-    printf("Conversion success...");
+    printf("Conversion success...\n\n");
 }
 
 int main() {
+    clearConsole();
     convertTxtFileToBinFile();
     printf("Which mode to use?\n"
         "1. FIFO List\n"
         "2. FIFO Array\n"
         "3. LIFO List\n"
         "4. LIFO Array\n");
-    int choice = char_to_int((char)getch());;
+    int choice = char_to_int(getch());
     switch (choice) {
         case FIFO_LIST:
             FIFO_list_run();
@@ -168,7 +176,7 @@ int main() {
 }
 
 void FIFO_list_run() {
-
+    clearConsole();
     LIST *HEAD = NULL, *TAIL = NULL;
     while (1) {
         printf("Choose operation: \n"
@@ -181,7 +189,7 @@ void FIFO_list_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        int choice = char_to_int((char)getch());;
+        int choice = char_to_int((char) getch());;
         postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
@@ -189,7 +197,9 @@ void FIFO_list_run() {
                 fifo_list_add_student(&HEAD, &TAIL, st);
                 break;
             case PULL_ELEMENT:
-                fifo_list_pull_element(&HEAD, &TAIL, true);
+                LIST *s = fifo_list_pull_element(&HEAD, &TAIL, true);
+                fifo_list_free_element(&s);
+                free(s);
                 break;
             case SEARCH_ELEMENT:
                 fifo_list_search_element(HEAD, TAIL, searchModeSelection());
@@ -234,7 +244,7 @@ void FIFO_array_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        int choice = char_to_int((char)getch());
+        int choice = char_to_int((char) getch());
         postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
@@ -259,10 +269,10 @@ void FIFO_array_run() {
                 studentsArray = fifo_array_clear_all_elements(studentsArray, &studentsArraySize);
                 break;
             case SAVE_TO_BINARY:
-                studentsArray = fifo_array_save_all_elements_to_file(studentsArray,&studentsArraySize);
+                studentsArray = fifo_array_save_all_elements_to_file(studentsArray, &studentsArraySize);
                 break;
             case READ_FROM_BINARY:
-                studentsArray = fifo_array_read_all_elements_from_file(studentsArray,&studentsArraySize);
+                studentsArray = fifo_array_read_all_elements_from_file(studentsArray, &studentsArraySize);
                 break;
             case EXIT:
                 fifo_array_clear_all_elements(studentsArray, &studentsArraySize);
@@ -288,7 +298,7 @@ void LIFO_list_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        int choice = char_to_int((char)getch());
+        int choice = char_to_int((char) getch());
         postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
@@ -341,7 +351,7 @@ void LIFO_array_run() {
             "7. Write to .bin file\n"
             "8. Read from .bin file\n"
             "0. Exit\n");
-        int choice = char_to_int((char)getch());
+        int choice = char_to_int((char) getch());
         postOperationName(choice);
         switch (choice) {
             case ADD_ELEMENT:
@@ -366,10 +376,10 @@ void LIFO_array_run() {
                 studentsArray = lifo_array_clear_all_elements(studentsArray, &studentsArraySize);
                 break;
             case SAVE_TO_BINARY:
-                studentsArray = lifo_array_save_all_elements_to_file(studentsArray,&studentsArraySize);
+                studentsArray = lifo_array_save_all_elements_to_file(studentsArray, &studentsArraySize);
                 break;
             case READ_FROM_BINARY:
-                studentsArray = lifo_array_read_all_elements_from_file(studentsArray,&studentsArraySize);
+                studentsArray = lifo_array_read_all_elements_from_file(studentsArray, &studentsArraySize);
                 break;
             case EXIT:
                 lifo_array_clear_all_elements(studentsArray, &studentsArraySize);
@@ -398,7 +408,7 @@ short searchModeSelection() {
         "1. By name\n"
         "2. By surname\n"
         "3. By year of birth\n");
-    int choice = char_to_int((char)getch());;
+    int choice = char_to_int((char) getch());;
     switch (choice) {
         case 1:
             return 1;

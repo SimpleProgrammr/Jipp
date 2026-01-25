@@ -1,4 +1,3 @@
-
 #pragma once
 #include "DATA_TYPES.h"
 
@@ -19,8 +18,6 @@ void savePackageToFile(FILE* FILE, const STUDENT * ST) {
 
 STUDENT * readPackageFromFile(FILE* FILE) {
     STUDENT * ST = calloc(1, sizeof(STUDENT));
-
-
     //<txt1 len>[int]<TXT1>[char[]] <- NAME
     int len = 0;
     fread(&len, sizeof(int), 1, FILE);

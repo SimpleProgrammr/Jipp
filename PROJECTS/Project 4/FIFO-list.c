@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FileIO.h"
 
@@ -28,35 +29,8 @@ void fifo_list_add_student(LIST **HEAD, LIST **TAIL, STUDENT *ST) {
         *TAIL = tmpNewElement;
     }
 
-}
-
-void fifo_list_add_student_debug(LIST **HEAD, LIST **TAIL, const STUDENT *ST) {
-    LIST *tmpNewElement = calloc(1, sizeof(LIST));
-    if (tmpNewElement == NULL) {
-        fprintf(stderr, "Unable to allocate memory");
-        exit(-300);
-    }
-
-    tmpNewElement->data = calloc(1,sizeof(STUDENT));
-        tmpNewElement->data->name = calloc(1, sizeof(strlen(ST->name)));
-            memcpy(tmpNewElement->data->name, ST->name, strlen(ST->name));
-        tmpNewElement->data->surname= calloc(1, sizeof(strlen(ST->surname)));
-            memcpy(tmpNewElement->data->surname, ST->surname, strlen(ST->surname));
-        tmpNewElement->data->bYear = ST->bYear;
-
-
-    tmpNewElement->next = *TAIL;
-    tmpNewElement->prev = NULL;
-
-    if (*HEAD == NULL) {
-        *HEAD = tmpNewElement;
-    }
-    if (*TAIL == NULL) {
-        *TAIL = tmpNewElement;
-    } else {
-        (*TAIL)->prev = tmpNewElement;
-        *TAIL = tmpNewElement;
-    }
+    post_addition_header();
+    post_student(ST);
 
 }
 
@@ -108,11 +82,7 @@ void fifo_list_print_element(const STUDENT *st) {
         fprintf(stderr, "NULL Data error\n");
         return;
     }
-    printf("----------STUDENT----------\n"
-           "Name: %s\n"
-           "Surname: %s\n"
-           "Birth year: %d\n\n",
-           st->name, st->surname, st->bYear);
+    post_student(st);
 }
 
 long fifo_list_count_elements(LIST **HEAD, LIST **TAIL) {
@@ -170,7 +140,8 @@ void fifo_list_search_element(LIST *HEAD, LIST *TAIL, short mode) {
                 if (ST->bYear == tmpElement->data->bYear)
                     fifo_list_print_element(tmpElement->data);
                 break;
-            default: ;
+            default:
+                break;
         }
     }
     free(ST);
@@ -183,8 +154,10 @@ LIST *fifo_list_pull_element(LIST **HEAD, LIST **TAIL, bool post) {
         return NULL;
     }
 
-    if (post)
+    if (post) {
+        post_pull_header();
         fifo_list_print_element((*HEAD)->data);
+    }
 
     LIST *tmpElement = *HEAD;
     if (*HEAD == *TAIL) {
@@ -214,7 +187,7 @@ void fifo_list_print_all_elements(LIST **HEAD, LIST **TAIL) {
 void fifo_list_clear_all_elements(LIST **HEAD, LIST **TAIL) {
     while (*HEAD != NULL && *TAIL != NULL) {
         LIST *tmpEl = fifo_list_pull_element(HEAD, TAIL, true);
-        printf("Freeing...\n");
+        post_clear_header();
         fifo_list_free_element(&tmpEl);
     }
     printf("All elements are gone!\n");
@@ -231,6 +204,7 @@ void fifo_list_save_all_elements_to_file(LIST **HEAD, LIST **TAIL) {
 
     //Pulling to save
     while (*HEAD != NULL && *TAIL != NULL) {
+        post_file_save_header();
         LIST *tmpEl = fifo_list_pull_element(HEAD, TAIL, true);
         fifo_list_add_element(&tmpHEAD, &tmpTAIL, tmpEl);
         savePackageToFile(file,tmpEl->data);
@@ -250,11 +224,12 @@ void fifo_list_read_all_elements_from_file(LIST **HEAD, LIST **TAIL) {
     fread(&count, sizeof(long), 1, file);
     long c = 0;
     for (long i = 0; i < count; i++) {
-        STUDENT* tmpElement = readPackageFromFile(file);
-        fifo_list_add_student(HEAD, TAIL, tmpElement);
+        STUDENT* tmpStudent = readPackageFromFile(file);
+        post_file_read_header();
+        fifo_list_add_student(HEAD, TAIL, tmpStudent);
         c++;
     }
-    printf("Added %ld elements form file\n\n", c);
+
 
     fclose(file);
 }

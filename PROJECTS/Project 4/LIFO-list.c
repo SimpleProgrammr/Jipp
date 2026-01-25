@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FileIO.h"
 

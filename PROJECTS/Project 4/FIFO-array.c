@@ -1,9 +1,9 @@
 #pragma once
 #include <stdbool.h>
+#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FileIO.h"
 
-void fifo_array_print_student(const STUDENT *st);
 
 STUDENT** fifo_array_print_all_students(STUDENT **arr, long *studentsArraySize);
 
@@ -18,31 +18,11 @@ STUDENT **fifo_array_add_student(STUDENT **arr, long *studentsArraySize, STUDENT
     }
     newArray[*studentsArraySize - 1] = newStudent;
 
-    if (post)
-        fifo_array_print_student(newArray[*studentsArraySize - 1]);
-
-    return newArray;
-}
-
-STUDENT **fifo_array_add_student_debug(STUDENT **arr, long *studentsArraySize, const STUDENT *newStudent) {
-    STUDENT **newArray = NULL;
-    (*studentsArraySize)++;
-
-    STUDENT *tmpStudent = calloc(*studentsArraySize, sizeof(STUDENT));
-    tmpStudent->name = calloc(1, sizeof(strlen(newStudent->name)));
-    memcpy(tmpStudent->name, newStudent->name, strlen(newStudent->name));
-    tmpStudent->surname = calloc(1, sizeof(strlen(newStudent->surname)));
-    memcpy(tmpStudent->surname, newStudent->surname, strlen(newStudent->surname));
-    tmpStudent->bYear = newStudent->bYear;
-
-    if (arr == NULL) {
-        newArray = (STUDENT **) calloc(*studentsArraySize, sizeof(STUDENT *));
-    } else {
-        newArray = resizeArray(arr, *studentsArraySize);
+    if (post) {
+        post_addition_header();
+        post_student(newArray[*studentsArraySize - 1]);
     }
-    newArray[*studentsArraySize - 1] = tmpStudent;
 
-    fifo_array_print_student(newArray[*studentsArraySize - 1]);
     return newArray;
 }
 
@@ -62,31 +42,25 @@ pullRet *fifo_array_pull_student(STUDENT **arr, long *studentsArraySize, bool po
 
     arr = resizeArray(arr, *studentsArraySize);
     if (post) {
-        printf("Pulling...\n");
-        fifo_array_print_student(pulledStudent);
+        post_pull_header();
+        post_student(pulledStudent);
     }
     pullRet *r = &(pullRet){pulledStudent, arr};
     return r;
 }
 
-void fifo_array_print_student(const STUDENT *st) {
-    printf("------------Student--------------\n");
-    printf("Name: %s\n", st->name);
-    printf("Surname: %s\n", st->surname);
-    printf("Birth year: %d\n\n", st->bYear);
-}
-
 STUDENT ** fifo_array_print_all_students(STUDENT **arr, long *studentsArraySize) {
     if (*studentsArraySize == 1) {
-        fifo_array_print_student(arr[0]);
+        post_student(arr[0]);
         return arr;
     }
 
     for (long i = 0; i < *studentsArraySize; i++) {
-        pullRet *pr = fifo_array_pull_student(arr, studentsArraySize, false);
+        post_pull_header();
+        pullRet *pr = fifo_array_pull_student(arr, studentsArraySize, true);
         STUDENT *st = pr->st;
         arr = pr->arr;
-        arr = fifo_array_add_student(arr, studentsArraySize, st, true);
+        arr = fifo_array_add_student(arr, studentsArraySize, st, false);
     }
     return arr;
 }
@@ -113,8 +87,9 @@ STUDENT ** fifo_array_clear_all_elements(STUDENT **arr, long *studentsArraySize)
         pullRet *pr = fifo_array_pull_student(arr, studentsArraySize, false);
         STUDENT* toFree = pr->st;
         arr = pr->arr;
+        post_clear_header();
+        post_student(toFree);
         fifo_array_free_student(toFree);
-        printf("Student freed...\n");
     }
     return arr;
 }
@@ -133,6 +108,7 @@ STUDENT ** fifo_array_save_all_elements_to_file(STUDENT** arr, long *studentsArr
         savePackageToFile(file,tmpStudent);
 
         //Putting back on place
+        post_student(tmpStudent);
         arr = fifo_array_add_student(arr, studentsArraySize, tmpStudent, true);
     }
     printf("Saved %ld elements to file\n\n", *studentsArraySize);
@@ -147,6 +123,7 @@ STUDENT ** fifo_array_read_all_elements_from_file(STUDENT ** arr, long *students
     long c = 0;
     for (long i = 0; i < count; i++) {
         STUDENT* tmpElement = readPackageFromFile(file);
+        post_file_read_header();
         arr = fifo_array_add_student(arr, studentsArraySize, tmpElement, true);
         c++;
     }
@@ -157,7 +134,6 @@ STUDENT ** fifo_array_read_all_elements_from_file(STUDENT ** arr, long *students
 }
 
 STUDENT ** fifo_array_search_element(STUDENT** arr, long* studentArraySize, short mode) {
-
     if (arr == NULL) {
         perror("Unable to look in NULL array");
         return NULL;
@@ -184,30 +160,43 @@ STUDENT ** fifo_array_search_element(STUDENT** arr, long* studentArraySize, shor
             return arr;
     }
     long countedElements = *studentArraySize;
-    pullRet *tmpElement;
+    pullRet *tmpElement = calloc(1, sizeof(pullRet));
+    if (tmpElement == NULL) {
+        fprintf(stderr, "Unable to allocate memory");
+        exit(-300);
+    }
+    STUDENT *toCheck = NULL;
     for (long i = 0; i < countedElements; i++) {
         if (*studentArraySize == 1)
             tmpElement = &(pullRet){*arr, arr};
         else {
             tmpElement = fifo_array_pull_student(arr, studentArraySize, false);
+            toCheck = tmpElement->st;
             arr = fifo_array_add_student(tmpElement->arr,studentArraySize, tmpElement->st, false);
         }
         switch (mode) {
             case 1: //by Name
-                if (strcmp(ST->name, tmpElement->st->name) == 0)
-                    fifo_array_print_student(tmpElement->st);
+                if (strcmp(ST->name, toCheck->name) == 0) {
+                    post_search_header();
+                    post_student(toCheck);
+                }
                 break;
             case 2: //by Surname
-                if (strcmp(ST->surname, tmpElement->st->surname) == 0)
-                    fifo_array_print_student(tmpElement->st);
+                if (strcmp(ST->surname, toCheck->surname) == 0) {
+                    post_search_header();
+                    post_student(toCheck);
+                }
                 break;
             case 3: //by bYear
-                if (ST->bYear == tmpElement->st->bYear)
-                    fifo_array_print_student(tmpElement->st);
+                if (ST->bYear == toCheck->bYear) {
+                    post_search_header();
+                    post_student(toCheck);
+                }
                 break;
             default: ;
         }
     }
+    free(tmpElement);
     free(ST);
     ST = NULL;
     return arr;
