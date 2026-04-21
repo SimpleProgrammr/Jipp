@@ -1,12 +1,11 @@
 #pragma once
 #include <stdbool.h>
-#include "CONSOLE_IO.h"
 #include "DATA_TYPES.h"
 #include "FileIO.h"
 
 void lifo_array_print_student(const STUDENT *st);
 
-STUDENT **lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize);
+STUDENT** lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize);
 
 STUDENT **lifo_array_add_student(STUDENT **arr, long *studentsArraySize, STUDENT *newStudent, bool post) {
     STUDENT **newArray = NULL;
@@ -48,17 +47,13 @@ STUDENT **lifo_array_add_student_debug(STUDENT **arr, long *studentsArraySize, c
 }
 
 pullRet *lifo_array_pull_student(STUDENT **arr, long *studentsArraySize, bool post) {
+
     if (arr == NULL || *studentsArraySize <= 0) {
         perror("Unable to pull from empty array");
-        return (&(pullRet)
-        {
-            NULL, NULL
-        }
-        )
-        ;
+        return (&(pullRet){NULL, NULL});
     }
-    STUDENT *pulledStudent = arr[*studentsArraySize - 1];
-    arr[*studentsArraySize - 1] = NULL;
+    STUDENT *pulledStudent = arr[*studentsArraySize-1];
+    arr[*studentsArraySize-1] = NULL;
 
     *studentsArraySize -= 1;
 
@@ -68,10 +63,7 @@ pullRet *lifo_array_pull_student(STUDENT **arr, long *studentsArraySize, bool po
         printf("Pulling...\n");
         lifo_array_print_student(pulledStudent);
     }
-    pullRet *r = &(pullRet)
-    {
-        pulledStudent, arr
-    };
+    pullRet *r = &(pullRet){pulledStudent, arr};
     return r;
 }
 
@@ -82,10 +74,11 @@ void lifo_array_print_student(const STUDENT *st) {
     printf("Birth year: %d\n\n", st->bYear);
 }
 
-STUDENT **lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize) {
+STUDENT ** lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize) {
+
     long total_students = 0;
-    STUDENT **tempArr = NULL;
-    for (long i = *studentsArraySize - 1; i >= 0; i--) {
+    STUDENT ** tempArr = NULL;
+    for (long i = *studentsArraySize -1 ; i >= 0; i--) {
         pullRet *pr = lifo_array_pull_student(arr, studentsArraySize, false);
         STUDENT *st = pr->st;
         arr = pr->arr;
@@ -101,7 +94,7 @@ STUDENT **lifo_array_print_all_students(STUDENT **arr, long *studentsArraySize) 
 }
 
 void lifo_array_free_student(STUDENT *st) {
-    if (st == NULL) {
+    if (st==NULL) {
         perror("Unable to free NULL");
         return;
     }
@@ -113,14 +106,14 @@ void lifo_array_free_student(STUDENT *st) {
     st = NULL;
 }
 
-STUDENT **lifo_array_clear_all_elements(STUDENT **arr, long *studentsArraySize) {
+STUDENT ** lifo_array_clear_all_elements(STUDENT **arr, long *studentsArraySize) {
     long amount_to_free = *studentsArraySize;
-    for (long i = amount_to_free - 1; i >= 0; i--) {
+    for (long i = amount_to_free -1; i >= 0; i--) {
         if (arr == NULL)
             continue;
 
         pullRet *pr = lifo_array_pull_student(arr, studentsArraySize, false);
-        STUDENT *toFree = pr->st;
+        STUDENT* toFree = pr->st;
         arr = pr->arr;
         lifo_array_free_student(toFree);
         printf("Student freed...\n");
@@ -128,32 +121,32 @@ STUDENT **lifo_array_clear_all_elements(STUDENT **arr, long *studentsArraySize) 
     return arr;
 }
 
-STUDENT **lifo_array_save_all_elements_to_file(STUDENT **arr, long *studentsArraySize) {
-    FILE *file = fopen("Elements.bin", "wb");
+STUDENT ** lifo_array_save_all_elements_to_file(STUDENT** arr, long *studentsArraySize) {
+    FILE* file = fopen("Elements.bin", "wb");
 
     //<elements count>[int]
     fwrite(studentsArraySize, sizeof(long), 1, file);
 
     if (*studentsArraySize == 1) {
-        savePackageToFile(file, arr[0]);
+        savePackageToFile(file,arr[0]);
         fclose(file);
         return arr;
     }
 
     long total_students = 0;
-    STUDENT **tempArr = NULL;
+    STUDENT ** tempArr = NULL;
     //Pulling to save
-    for (long i = *studentsArraySize - 1; i >= 0; i--) {
+    for (long i = *studentsArraySize -1 ; i >= 0; i--) {
         pullRet *pr = lifo_array_pull_student(arr, studentsArraySize, false);
         STUDENT *st = pr->st;
         arr = pr->arr;
         tempArr = lifo_array_add_student(tempArr, &total_students, st, true);
     }
-    for (long i = total_students - 1; i >= 0; i--) {
+    for (long i = total_students-1; i >= 0 ; i--) {
         pullRet *pr = lifo_array_pull_student(tempArr, &total_students, false);
         STUDENT *st = pr->st;
         tempArr = pr->arr;
-        savePackageToFile(file, st);
+        savePackageToFile(file,st);
         arr = lifo_array_add_student(arr, studentsArraySize, st, false);
     }
 
@@ -162,13 +155,13 @@ STUDENT **lifo_array_save_all_elements_to_file(STUDENT **arr, long *studentsArra
     return arr;
 }
 
-STUDENT **lifo_array_read_all_elements_from_file(STUDENT **arr, long *studentsArraySize) {
-    FILE *file = fopen("Elements.bin", "rb");
+STUDENT ** lifo_array_read_all_elements_from_file(STUDENT ** arr, long *studentsArraySize) {
+    FILE* file = fopen("Elements.bin", "rb");
     long count = 0;
     fread(&count, sizeof(long), 1, file);
     long c = 0;
-    for (long i = count - 1; i >= 0; i--) {
-        STUDENT *tmpElement = readPackageFromFile(file);
+    for (long i = count -1; i >= 0; i--) {
+        STUDENT* tmpElement = readPackageFromFile(file);
         arr = lifo_array_add_student(arr, studentsArraySize, tmpElement, true);
         c++;
     }
@@ -178,7 +171,8 @@ STUDENT **lifo_array_read_all_elements_from_file(STUDENT **arr, long *studentsAr
     return arr;
 }
 
-STUDENT **lifo_array_search_element(STUDENT **arr, long *studentArraySize, short mode) {
+STUDENT ** lifo_array_search_element(STUDENT** arr, long* studentArraySize, short mode) {
+
     if (arr == NULL) {
         perror("Unable to look in NULL array");
         return NULL;
@@ -205,23 +199,13 @@ STUDENT **lifo_array_search_element(STUDENT **arr, long *studentArraySize, short
             return arr;
     }
     long countedElements = *studentArraySize;
-    pullRet *tmpElement = calloc(1, sizeof(pullRet));
-    if (tmpElement == NULL) {
-        fprintf(stderr, "Unable to allocate memory");
-        exit(-300);
-    };
-    STUDENT *toCheck = NULL;
-    for (long i = countedElements - 1; i >= 0; i--) {
-        if (*studentArraySize == 1) {
-            tmpElement = &(pullRet)
-            {
-                *arr, arr
-            };
-            toCheck = tmpElement->st;
-        } else {
+    pullRet *tmpElement;
+    for (long i = countedElements-1; i >=0; i--) {
+        if (*studentArraySize == 1)
+            tmpElement = &(pullRet){*arr, arr};
+        else {
             tmpElement = lifo_array_pull_student(arr, studentArraySize, false);
-            toCheck = tmpElement->st;
-            arr = lifo_array_add_student(tmpElement->arr, studentArraySize, tmpElement->st, false);
+            arr = lifo_array_add_student(tmpElement->arr,studentArraySize, tmpElement->st, false);
         }
         switch (mode) {
             case 1: //by Name
@@ -243,3 +227,4 @@ STUDENT **lifo_array_search_element(STUDENT **arr, long *studentArraySize, short
     ST = NULL;
     return arr;
 }
+
